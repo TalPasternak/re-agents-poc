@@ -1,0 +1,20 @@
+# Compiled Java
+*.class
+target/
+build/
+out/
+bin/
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated SRS report (the SRS itself we keep — it's the deliverable)
+output/generation-report.md
