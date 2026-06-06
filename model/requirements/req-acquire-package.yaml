@@ -1,0 +1,10 @@
+id: req-acquire-package
+entity_type: REQUIREMENT
+title: Acquire the update package
+description: >-
+  The system shall acquire the complete software update package from the back-end
+  before beginning validation and installation.
+requirement_type: FUNCTIONAL
+priority: HIGH
+tags: [ota]
+provenance: {activity: process, mode: 1, rationale: Master ECU acquisition step., created: 2026-06-05, last_modified: 2026-06-05}

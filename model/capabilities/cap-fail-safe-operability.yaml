@@ -1,0 +1,11 @@
+id: cap-fail-safe-operability
+entity_type: CAPABILITY
+title: Fail-safe operability (never non-functional)
+description: >-
+  The cross-cutting safety property that the vehicle software must NEVER end up
+  non-functional as a result of an update. Broader than rollback: it covers
+  power-loss and interruption tolerance during flashing, A/B partition / dual-bank
+  schemes, and safe defaults so the vehicle always retains a working software set.
+  Owned by the umbrella because it spans the whole OTA chain.
+tags: [ota, safety, cross-cutting]
+provenance: {activity: context, mode: 1, rationale: Cross-cutting fail-safe property spanning the whole system (confirmed)., created: 2026-06-05, last_modified: 2026-06-05}

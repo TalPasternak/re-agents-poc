@@ -1,0 +1,5 @@
+id: rel-activates-collect-fleet-status
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-collect-fleet-status
+provenance: {activity: process, mode: 1, rationale: Process exercises fleet status collection., created: 2026-06-05, last_modified: 2026-06-05}

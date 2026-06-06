@@ -7,7 +7,7 @@ engineering**. Built on Claude Code subagents.
 
 Given a software system to specify, the tool guides a human analyst through
 four activities, building up a structured **requirements model** and finally
-emitting a Markdown + Mermaid **System Requirements Specification**.
+emitting a Markdown + Mermaid **System/Subsystem Specification**.
 
 ### Four activities
 
@@ -37,7 +37,7 @@ Start a Claude Code session and try things like:
 
 - *"Use the context-identifier to help me define the system boundary for [your system]"*
 - *"Use the domain-modeler — here's a description: [paste]"*
-- *"Generate the SRS"*
+- *"Generate the SSS"*
 
 ## Project layout
 
@@ -45,7 +45,7 @@ See `CLAUDE.md` for the full layout and design principles.
 
 ## Status
 
-PoC scaffold. The meta-model and SRS template are placeholders awaiting
+PoC scaffold. The meta-model and SSS template are placeholders awaiting
 detailed specification.
 
 ## Why subagents (not the SDK)?

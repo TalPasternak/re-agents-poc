@@ -1,0 +1,8 @@
+id: cap-report-vehicle-status
+entity_type: CAPABILITY
+title: Report vehicle update status
+description: >-
+  Aggregate per-module outcomes into an overall vehicle update status and report
+  it to the back-end.
+tags: [ota, master-ecu]
+provenance: {activity: context, mode: 1, rationale: Master ECU reports aggregated vehicle status upward., created: 2026-06-05, last_modified: 2026-06-05}

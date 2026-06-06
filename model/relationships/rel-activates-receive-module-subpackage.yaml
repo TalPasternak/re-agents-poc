@@ -1,0 +1,5 @@
+id: rel-activates-receive-module-subpackage
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-receive-module-subpackage
+provenance: {activity: process, mode: 1, rationale: Process exercises per-module sub-package reception by the agent., created: 2026-06-05, last_modified: 2026-06-05}

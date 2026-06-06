@@ -60,6 +60,15 @@ The analyst proposes a change ("add a work-item X", "rename Y to Z",
    creates problems, explain them and propose alternatives (often returning
    to Mode 3)
 
+**A rejected option is Mode-4 input.** When the analyst rejects the
+options you offered in Mode 3 — explicitly, or by correcting you (e.g.
+via `/btw`) — treat the rejection as a suggestion to evaluate, not as
+noise. **Reformulate from the correction; never re-issue the same
+question with the same options.** Repeating a question the analyst has
+already answered (or whose options they have already rejected) is always
+wrong: incorporate what they told you and ask only about what remains
+open.
+
 ## Mode-switching
 
 The analyst can switch modes mid-session. Common transitions:
@@ -82,3 +91,9 @@ Every model change must record:
 
 This metadata lives on the work-item or link itself (see the `metamodel`
 skill for the exact field name).
+
+**Persistence across sessions.** Confirmed decisions must be written to
+the model promptly — as soon as they are confirmed, not batched to the
+end of a session — so they survive a `/resume`. A decision held only in
+the conversation can be lost when context is summarised; a decision on
+disk can always be recovered by reading the model.

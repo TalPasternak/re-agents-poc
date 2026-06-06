@@ -1,0 +1,11 @@
+id: req-confirm-rollback-restoration
+entity_type: REQUIREMENT
+title: Confirm restoration to safe operable state
+description: >-
+  The system shall confirm, after a coordinated rollback, that every target module
+  has been restored to its backed-up image and that the vehicle is in a fully
+  operable state.
+requirement_type: FUNCTIONAL
+priority: CRITICAL
+tags: [ota, rollback, safety]
+provenance: {activity: process, mode: 1, rationale: Master ECU restoration confirmation step., created: 2026-06-05, last_modified: 2026-06-05}

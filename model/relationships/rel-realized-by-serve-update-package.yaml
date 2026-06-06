@@ -1,0 +1,5 @@
+id: rel-realized-by-serve-update-package
+relationship_type: REALIZED_BY
+source_id: req-serve-update-package
+target_id: cap-manage-packages
+provenance: {activity: process, mode: 1, rationale: Requirement realised by package management leaf., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,10 @@
+id: req-detect-module-failure
+entity_type: REQUIREMENT
+title: Detect module install or verification failure
+description: >-
+  The system shall detect when any target module install or verification fails or
+  does not complete within its configured timeout.
+requirement_type: FUNCTIONAL
+priority: CRITICAL
+tags: [ota, rollback]
+provenance: {activity: process, mode: 1, rationale: Master ECU failure/timeout detection step., created: 2026-06-05, last_modified: 2026-06-05}

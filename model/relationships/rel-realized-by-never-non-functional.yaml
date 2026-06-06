@@ -1,0 +1,5 @@
+id: rel-realized-by-never-non-functional
+relationship_type: REALIZED_BY
+source_id: req-never-non-functional
+target_id: cap-confirm-rollback-restoration
+provenance: {activity: process, mode: 4, rationale: All-or-nothing safety constraint realised by the restoration confirmation leaf on the Master ECU., created: 2026-06-05, last_modified: 2026-06-05}

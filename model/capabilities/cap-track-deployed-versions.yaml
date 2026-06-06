@@ -1,0 +1,8 @@
+id: cap-track-deployed-versions
+entity_type: CAPABILITY
+title: Track deployed version per vehicle and module
+description: >-
+  Maintain an accurate record of which software version is currently deployed on
+  each vehicle and each of its modules.
+tags: [ota, backend]
+provenance: {activity: capability, mode: 3, rationale: Deployed-version tracking facet of version management., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,5 @@
+id: rel-realized-by-acquire-package
+relationship_type: REALIZED_BY
+source_id: req-acquire-package
+target_id: cap-acquire-package
+provenance: {activity: process, mode: 1, rationale: Requirement realised by acquisition leaf., created: 2026-06-05, last_modified: 2026-06-05}

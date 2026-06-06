@@ -1,0 +1,5 @@
+id: rel-conn-opbk-operator
+relationship_type: CONNECTS_TO
+source_id: if-operator-backend
+target_id: c-actor-fleet-operator
+provenance: {activity: context, mode: 1, rationale: Interface attaches to the fleet operator., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,10 @@
+id: req-sequence-module-installs
+entity_type: REQUIREMENT
+title: Sequence and trigger module installs
+description: >-
+  The system shall sequence and trigger the installation of the three target
+  modules according to the defined install order.
+requirement_type: FUNCTIONAL
+priority: HIGH
+tags: [ota]
+provenance: {activity: process, mode: 1, rationale: Master ECU install sequencing step., created: 2026-06-05, last_modified: 2026-06-05}

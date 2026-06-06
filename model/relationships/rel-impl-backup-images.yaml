@@ -1,0 +1,5 @@
+id: rel-impl-backup-images
+relationship_type: IMPLEMENTED_BY
+source_id: cap-backup-images
+target_id: c-master-update-ecu
+provenance: {activity: context, mode: 1, rationale: Owned by the Master Update ECU., created: 2026-06-05, last_modified: 2026-06-05}

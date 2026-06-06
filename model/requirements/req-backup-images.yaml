@@ -1,0 +1,10 @@
+id: req-backup-images
+entity_type: REQUIREMENT
+title: Back up current module images
+description: >-
+  The system shall create a recoverable backup of the current firmware image of
+  every target module before initiating any module installation.
+requirement_type: FUNCTIONAL
+priority: CRITICAL
+tags: [ota, rollback]
+provenance: {activity: process, mode: 1, rationale: Master ECU image backup step (precondition for rollback)., created: 2026-06-05, last_modified: 2026-06-05}

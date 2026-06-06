@@ -1,0 +1,5 @@
+id: rel-activates-backup-images
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-backup-images
+provenance: {activity: process, mode: 1, rationale: Process exercises image backup before install., created: 2026-06-05, last_modified: 2026-06-05}

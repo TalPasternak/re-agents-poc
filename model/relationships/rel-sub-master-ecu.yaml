@@ -1,0 +1,6 @@
+id: rel-sub-master-ecu
+relationship_type: SUB_COMPONENT_OF
+source_id: c-master-update-ecu
+target_id: c-system-ota
+description: Master Update ECU is an internal part of the OTA Update System.
+provenance: {activity: context, mode: 1, rationale: Internal part under the umbrella., created: 2026-06-05, last_modified: 2026-06-05}

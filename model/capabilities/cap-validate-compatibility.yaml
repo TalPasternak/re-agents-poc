@@ -1,0 +1,8 @@
+id: cap-validate-compatibility
+entity_type: CAPABILITY
+title: Validate package compatibility
+description: >-
+  Confirm the package targets the correct vehicle/module configuration and version
+  lineage (target and version compatibility) before installation is permitted.
+tags: [ota, master-ecu]
+provenance: {activity: capability, mode: 3, rationale: Target/version compatibility validation leaf., created: 2026-06-05, last_modified: 2026-06-05}

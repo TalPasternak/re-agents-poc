@@ -1,0 +1,6 @@
+id: rel-subcap-detect-module-failure
+relationship_type: SUB_CAPABILITY_OF
+source_id: cap-detect-module-failure
+target_id: cap-coordinate-rollback
+description: Failure detection is a facet of all-or-nothing rollback coordination.
+provenance: {activity: capability, mode: 3, rationale: Child of coordinate-rollback root., created: 2026-06-05, last_modified: 2026-06-05}

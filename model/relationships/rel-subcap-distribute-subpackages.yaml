@@ -1,0 +1,6 @@
+id: rel-subcap-distribute-subpackages
+relationship_type: SUB_CAPABILITY_OF
+source_id: cap-distribute-subpackages
+target_id: cap-orchestrate-install
+description: Sub-package distribution is a facet of install orchestration.
+provenance: {activity: capability, mode: 3, rationale: Child of orchestrate-install root., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,5 @@
+id: rel-activates-issue-commands
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-issue-commands
+provenance: {activity: process, mode: 1, rationale: Process exercises command issuance., created: 2026-06-05, last_modified: 2026-06-05}

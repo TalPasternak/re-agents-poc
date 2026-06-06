@@ -1,0 +1,5 @@
+id: rel-realized-by-detect-module-failure
+relationship_type: REALIZED_BY
+source_id: req-detect-module-failure
+target_id: cap-detect-module-failure
+provenance: {activity: process, mode: 1, rationale: Requirement realised by failure detection leaf., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,18 @@
+id: if-agent-firmware
+entity_type: INTERFACE
+title: Flash/install boundary (Update Agent–Target ECU Firmware)
+description: >-
+  The install/flash boundary at which the Target ECU Update Agent writes a new
+  application-firmware image onto the external target ECU, verifies it, and can
+  revert it to the previous image. Boundary-crossing (internal agent ↔ external
+  firmware payload).
+interface_type: OTHER
+protocol: ECU flash/programming (bootloader memory programming)
+connected_component_ids: [c-target-ecu-update-agent, c-ext-target-ecu-firmware]
+tags: [ota, flash]
+provenance:
+  activity: context
+  mode: 1
+  rationale: The point at which the agent acts upon the external firmware payload (confirmed).
+  created: 2026-06-05
+  last_modified: 2026-06-05

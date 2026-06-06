@@ -1,0 +1,6 @@
+id: rel-subcap-trigger-coordinated-rollback
+relationship_type: SUB_CAPABILITY_OF
+source_id: cap-trigger-coordinated-rollback
+target_id: cap-coordinate-rollback
+description: Triggering the coordinated rollback is a facet of all-or-nothing rollback coordination.
+provenance: {activity: capability, mode: 3, rationale: Child of coordinate-rollback root., created: 2026-06-05, last_modified: 2026-06-05}

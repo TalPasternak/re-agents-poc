@@ -1,0 +1,9 @@
+id: cap-acquire-validate-package
+entity_type: CAPABILITY
+title: Acquire and validate update package
+description: >-
+  Download the update package from the back-end into the Master Update ECU's
+  internal storage and validate its integrity and authenticity before any
+  installation begins.
+tags: [ota, master-ecu]
+provenance: {activity: context, mode: 1, rationale: Master ECU downloads and validates the package., created: 2026-06-05, last_modified: 2026-06-05}

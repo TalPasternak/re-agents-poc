@@ -1,0 +1,10 @@
+id: req-validate-integrity
+entity_type: REQUIREMENT
+title: Validate package integrity
+description: >-
+  The system shall verify the checksum of the acquired update package and reject
+  the package if the computed checksum does not match the expected value.
+requirement_type: FUNCTIONAL
+priority: CRITICAL
+tags: [ota]
+provenance: {activity: process, mode: 1, rationale: Master ECU integrity validation step., created: 2026-06-05, last_modified: 2026-06-05}

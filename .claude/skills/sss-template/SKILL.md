@@ -1,14 +1,14 @@
 ---
-name: srs-template
-description: How to generate the System Requirements Specification (SRS) as Markdown with embedded Mermaid diagrams. Defines section-to-entity-type mappings and how Process.mermaid_code is embedded directly. Consult this skill before running srs-generator or editing templates/srs-template.md.
+name: sss-template
+description: How to generate the System/Subsystem Specification (SSS) as Markdown with embedded Mermaid diagrams. Defines section-to-entity-type mappings and how Process.mermaid_code is embedded directly. Consult this skill before running sss-generator or editing templates/sss-template.md.
 ---
 
-# SRS Generation
+# SSS Generation
 
-The SRS is **generated** from the requirements model, never authored by
-hand. The generator (`srs-generator` agent) reads the model in `model/`,
-applies the template in `templates/srs-template.md`, and writes
-`output/srs.md`.
+The SSS is **generated** from the requirements model, never authored by
+hand. The generator (`sss-generator` agent) reads the model in `model/`,
+applies the template in `templates/sss-template.md`, and writes
+`output/sss.md`.
 
 ## Generation principles
 
@@ -30,25 +30,26 @@ applies the template in `templates/srs-template.md`, and writes
 
 | Section | Entities used | Relationships used | Diagram |
 |---|---|---|---|
-| 1. Introduction | the single `Component` of type `SYSTEM` | — | — |
-| 2. System context | `SYSTEM` + all external components + their `Interface`s | `CONNECTS_TO` | Mermaid `graph` (computed) |
-| 3. Capabilities | all `Capability`s | `IMPLEMENTED_BY`, `SUB_CAPABILITY_OF` | Mermaid `graph TD` of capability tree (computed) |
-| 4. Requirements | all `Requirement`s | `REALIZED_BY`, `REFINES` | — |
-| 5. Processes | all `Process`es | `ACTIVATES` (participants derived per metamodel §4a) | Embedded `mermaid_code` from each Process (verbatim) |
-| 6. Traceability | all | `IMPLEMENTED_BY`, `REALIZED_BY`, `ACTIVATES` | — |
+| 1. Introduction | the `SYSTEM` umbrella `Component` (title + description) | — | — |
+| 2. System Description — 2.1 System Context | all `INTERNAL` components (umbrella + parts) + all `EXTERNAL` components + their `Interface`s | `CONNECTS_TO` | Mermaid `graph` (computed) |
+| 2. System Description — 2.2/2.3 Capabilities | all `Capability`s (owned by any `INTERNAL` component) | `IMPLEMENTED_BY`, `SUB_CAPABILITY_OF` | Mermaid `graph TD` of capability tree (computed) |
+| 3. Requirements | all `Requirement`s | `REALIZED_BY`, `REFINES` | — |
+| 4. Processes | all `Process`es | `ACTIVATES` (participants derived per metamodel §4a) | Embedded `mermaid_code` from each Process (verbatim) |
+| 5. Traceability | all | `IMPLEMENTED_BY`, `REALIZED_BY`, `ACTIVATES` | — |
 
 Domain modelling has no section yet (see metamodel skill §7).
 
 ## Placeholder syntax
 
-Placeholders in `templates/srs-template.md` use `{{ ... }}` and are
+Placeholders in `templates/sss-template.md` use `{{ ... }}` and are
 evaluated by the generator:
 
 | Placeholder | Resolves to |
 |---|---|
-| `{{system.title}}` | Title of the SYSTEM component |
-| `{{system.description}}` | Description of the SYSTEM component |
-| `{{components: component_type=ACTOR\|EXTERNAL_SYSTEM}}` | List of external components |
+| `{{system.title}}` | Title of the SYSTEM umbrella component |
+| `{{system.description}}` | Description of the SYSTEM umbrella component |
+| `{{components: boundary=INTERNAL}}` | List of internal components (the umbrella + its parts) |
+| `{{components: boundary=EXTERNAL}}` | List of external components |
 | `{{interfaces}}` | All interfaces (table: title, type, connected components) |
 | `{{capability-tree}}` | Markdown nested list of the capability hierarchy |
 | `{{capability-diagram}}` | Computed Mermaid `graph TD` of the capability tree |
@@ -65,15 +66,19 @@ section with `{{omit-if-empty}}`.
 
 When the generator computes a diagram from relationships:
 
-- **Context diagram** (`{{context-diagram}}`): one node for the SYSTEM
-  component (distinct shape — `[[...]]`), one node per external
-  component (rounded — `(...)`), one labelled edge per interface using
-  the interface title.
+- **Context diagram** (`{{context-diagram}}`): the `SYSTEM` umbrella as a
+  distinct node (`[[...]]`); any other `INTERNAL` components as plain
+  boxes (`[...]`) grouped with the umbrella (e.g. inside a
+  `subgraph` labelled "System under design"); one node per `EXTERNAL`
+  component (rounded — `(...)`); one labelled edge per interface using
+  the interface title. When the system is a single component, only the
+  umbrella appears on the internal side.
 - **Capability tree** (`{{capability-diagram}}`): `graph TD` with the
-  parent at top; `SUB_CAPABILITY_OF` becomes a parent→child edge.
-  Capabilities `IMPLEMENTED_BY` a component get a side-note indicating
-  the component, but the implementation link is not an edge in this
-  diagram (it would clutter).
+  parent at top; `SUB_CAPABILITY_OF` becomes a parent→child edge. Each
+  root capability `IMPLEMENTED_BY` a component gets a side-note naming its
+  **owning internal component** (roots owned by different internal
+  components are distinguished), but the implementation link is not an
+  edge in this diagram (it would clutter).
 - Sequence/state/activity diagrams come **from the Process** verbatim —
   the generator does not synthesise them.
 
@@ -82,9 +87,9 @@ When the generator computes a diagram from relationships:
 1. Load all YAML under `model/`.
 2. Run all eight semantic rules from the metamodel skill. If any fails,
    emit a validation report to `output/generation-report.md` and stop.
-3. Load `templates/srs-template.md`.
+3. Load `templates/sss-template.md`.
 4. Resolve each placeholder in order.
-5. Write `output/srs.md`.
+5. Write `output/sss.md`.
 6. Write `output/generation-report.md` listing:
    - Sections populated, with entity/relationship counts
    - Sections skipped (and why)
@@ -95,6 +100,6 @@ When the generator computes a diagram from relationships:
 ## If the model is too thin to generate
 
 If the model has no SYSTEM component, or no capabilities, the generator
-does **not** emit a skeleton SRS. It writes a one-paragraph note to
+does **not** emit a skeleton SSS. It writes a one-paragraph note to
 `output/generation-report.md` saying what's missing and recommending
 which agent to run next.

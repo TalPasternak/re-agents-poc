@@ -1,0 +1,17 @@
+id: c-ext-target-ecu-firmware
+entity_type: COMPONENT
+title: Target ECU Application Firmware
+description: >-
+  The application software running on each target ECU — the actual firmware
+  being replaced. It is the object/payload that the Target ECU Update Agent
+  installs onto and can roll back. It lives on the external target-ECU host and
+  is the thing the OTA system acts upon, so it is external to the system.
+component_type: EXTERNAL_SYSTEM
+boundary: EXTERNAL
+tags: [ota, payload, firmware]
+provenance:
+  activity: context
+  mode: 1
+  rationale: The application firmware is the payload acted upon; external (confirmed).
+  created: 2026-06-05
+  last_modified: 2026-06-05

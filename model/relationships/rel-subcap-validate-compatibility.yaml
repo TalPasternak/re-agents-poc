@@ -1,0 +1,6 @@
+id: rel-subcap-validate-compatibility
+relationship_type: SUB_CAPABILITY_OF
+source_id: cap-validate-compatibility
+target_id: cap-acquire-validate-package
+description: Target/version compatibility validation is a facet of acquire-and-validate.
+provenance: {activity: capability, mode: 3, rationale: Child of acquire-and-validate root., created: 2026-06-05, last_modified: 2026-06-05}

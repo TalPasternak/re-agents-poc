@@ -1,0 +1,5 @@
+id: rel-activates-distribute-subpackages
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-distribute-subpackages
+provenance: {activity: process, mode: 1, rationale: Process exercises per-module sub-package distribution., created: 2026-06-05, last_modified: 2026-06-05}

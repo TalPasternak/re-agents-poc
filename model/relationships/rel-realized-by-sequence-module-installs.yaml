@@ -1,0 +1,5 @@
+id: rel-realized-by-sequence-module-installs
+relationship_type: REALIZED_BY
+source_id: req-sequence-module-installs
+target_id: cap-sequence-module-installs
+provenance: {activity: process, mode: 1, rationale: Requirement realised by install sequencing leaf., created: 2026-06-05, last_modified: 2026-06-05}

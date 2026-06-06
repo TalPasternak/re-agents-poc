@@ -1,0 +1,5 @@
+id: rel-realized-by-track-install-progress
+relationship_type: REALIZED_BY
+source_id: req-track-install-progress
+target_id: cap-track-install-progress
+provenance: {activity: process, mode: 1, rationale: Requirement realised by progress tracking leaf., created: 2026-06-05, last_modified: 2026-06-05}

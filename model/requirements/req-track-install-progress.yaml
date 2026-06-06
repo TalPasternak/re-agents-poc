@@ -1,0 +1,10 @@
+id: req-track-install-progress
+entity_type: REQUIREMENT
+title: Track per-module install progress
+description: >-
+  The system shall track the install progress and outcome of each target module
+  throughout the update.
+requirement_type: FUNCTIONAL
+priority: MEDIUM
+tags: [ota]
+provenance: {activity: process, mode: 1, rationale: Master ECU progress tracking step., created: 2026-06-05, last_modified: 2026-06-05}

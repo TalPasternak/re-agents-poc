@@ -1,0 +1,10 @@
+id: req-detect-module-timeout
+entity_type: REQUIREMENT
+title: Bound module install/verify wait time
+description: >-
+  The system shall treat a target module whose install or verification has not
+  reported completion within its configured per-module timeout as a failed module.
+requirement_type: NON_FUNCTIONAL
+priority: HIGH
+tags: [ota, timing, rollback]
+provenance: {activity: process, mode: 3, rationale: Timeout exception path for the rollback branch., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,6 @@
+id: rel-subcap-guarantee-working-software-set
+relationship_type: SUB_CAPABILITY_OF
+source_id: cap-guarantee-working-software-set
+target_id: cap-fail-safe-operability
+description: Safe-default working-set guarantee is a facet of fail-safe operability.
+provenance: {activity: capability, mode: 3, rationale: Child of the cross-cutting fail-safe root., created: 2026-06-05, last_modified: 2026-06-05}

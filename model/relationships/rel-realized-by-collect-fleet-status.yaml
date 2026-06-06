@@ -1,0 +1,5 @@
+id: rel-realized-by-collect-fleet-status
+relationship_type: REALIZED_BY
+source_id: req-collect-fleet-status
+target_id: cap-collect-fleet-status
+provenance: {activity: process, mode: 1, rationale: Requirement realised by fleet status collection leaf., created: 2026-06-05, last_modified: 2026-06-05}

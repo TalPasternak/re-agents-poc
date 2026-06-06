@@ -1,14 +1,14 @@
 ---
 name: metamodel
-description: The requirements metamodel — defines all entity types, their attributes, the relationship taxonomy, the allowed-source/target type matrix, and the eight semantic validation rules. Consult this skill before creating, modifying, or validating any entity or relationship in the model. Every activity agent and the SRS generator depend on this skill. Mirrors the Python SystemMetaModel in the parent project.
+description: The requirements metamodel — defines all entity types, their attributes, the relationship taxonomy, the allowed-source/target type matrix, and the eight semantic validation rules. Consult this skill before creating, modifying, or validating any entity or relationship in the model. Every activity agent and the SSS generator depend on this skill.
 ---
 
 # Requirements Metamodel
 
-This metamodel is a faithful YAML representation of the Python
-`SystemMetaModel` in the parent project. The Python code is the source of
-truth; this document is the on-disk projection used by the subagents.
-When the two diverge, fix the YAML, not the Python.
+This metamodel defines the requirements model used throughout the
+project. **This document is the source of truth**; the YAML files under
+`model/` are its on-disk projection, and every activity agent and the
+SSS generator conform to it.
 
 ## 1. Overview
 
@@ -23,9 +23,13 @@ The model is a typed graph:
 There is no "context-element" or "domain-concept" entity type — those
 concepts are expressed using the existing types:
 
-- **System context** = a `Component` of type `SYSTEM` (exactly one)
-  surrounded by `Component`s of type `ACTOR` / `EXTERNAL_SYSTEM` /
-  `EXTERNAL_*`, linked by `Interface` work-items.
+- **System context** = the **system under design** — the set of
+  `Component`s with `boundary: INTERNAL`, one of which is the `SYSTEM`
+  umbrella that names the whole — surrounded by `Component`s with
+  `boundary: EXTERNAL` (type `ACTOR` / `EXTERNAL_SYSTEM` / `EXTERNAL_*`),
+  linked by `Interface` work-items. The system may comprise **several**
+  internal components, and any of them may own capabilities; it is not
+  restricted to a single component.
 - **Domain modelling** is not yet part of the metamodel (see §7).
 
 ## 2. Storage layout
@@ -41,10 +45,9 @@ model/
 ```
 
 IDs are stable, human-readable slugs (e.g. `c-system-re-agents`,
-`cap-analyse-process`, `rel-impl-cap-by-system`). The Python code uses
-UUIDs; subagents prefer slugs because they're far easier to reference in
-Markdown prompts and across files. The Java side (when built) can map
-slugs to UUIDs.
+`cap-analyse-process`, `rel-impl-cap-by-system`). Slugs are preferred
+because they're far easier to reference in Markdown prompts and across
+files. The Java side (when built) can map slugs to its own IDs.
 
 ## 3. Entity types
 
@@ -56,7 +59,7 @@ entity_type: COMPONENT | CAPABILITY | REQUIREMENT | INTERFACE | PROCESS
 title: <short label>
 description: <one or more sentences>      # optional
 tags: [<tag>, ...]                        # optional
-provenance:                               # subagent extension, not in Python
+provenance:                               # provenance block (see below)
   activity: context | capability | process | domain
   mode: 1 | 2 | 3 | 4                     # see interaction-modes skill
   rationale: <one line>
@@ -64,9 +67,8 @@ provenance:                               # subagent extension, not in Python
   last_modified: <ISO-8601 date>
 ```
 
-`provenance` is a subagent-side extension to capture which activity and
-which interaction mode produced or last modified the entity. The Python
-side ignores it on load; the Java side will read it when we migrate.
+`provenance` captures which activity and which interaction mode produced
+or last modified the entity. The Java side will read it when we migrate.
 
 ### 3.1 Component
 
@@ -76,17 +78,34 @@ entity_type: COMPONENT
 title: ...
 description: ...
 component_type: SYSTEM | SUBSYSTEM | EXTERNAL_SYSTEM | ACTOR | SERVICE | DATABASE | UI | OTHER
+boundary: INTERNAL | EXTERNAL      # membership in the system under design
 tags: [...]
 provenance: {...}
 ```
 
 Notes:
-- **Exactly one** component must have `component_type: SYSTEM` — this is
-  the system under design. The chief-analyst agent enforces this.
+- **`boundary`** declares whether the component is **part of the system
+  under design** (`INTERNAL`) or in the **environment** (`EXTERNAL`). It
+  is orthogonal to `component_type`, which describes the *kind* of thing.
+  - Only `INTERNAL` components may own capabilities (be `IMPLEMENTED_BY`
+    targets — see §5 rules 3 and 7).
+  - The field is **inferred** when omitted for the unambiguous types:
+    `SYSTEM` ⇒ `INTERNAL`; `ACTOR` and `EXTERNAL_SYSTEM` ⇒ `EXTERNAL`.
+    For the ambiguous types (`SUBSYSTEM`, `SERVICE`, `DATABASE`, `UI`,
+    `OTHER`) `boundary` **must be stated explicitly**.
+- **The system under design may be several components.** All `INTERNAL`
+  components together constitute it. **Exactly one** of them has
+  `component_type: SYSTEM` — the **umbrella** that names the whole (used
+  for the SSS title and Section 1). The umbrella does *not* mean the
+  system is a single component; the other internal parts have other
+  types with `boundary: INTERNAL` and may own their own root
+  capabilities. The chief-analyst agent enforces the single-umbrella
+  rule.
 - `ACTOR` and `EXTERNAL_SYSTEM` (and other external-* values if added)
-  represent the system's environment.
+  are `EXTERNAL` and represent the system's environment.
 - `SUBSYSTEM` components are linked to their parent via
-  `SUB_COMPONENT_OF`.
+  `SUB_COMPONENT_OF`; internal parts are conventionally `SUB_COMPONENT_OF`
+  the umbrella (directly or transitively).
 
 ### 3.2 Capability
 
@@ -101,7 +120,9 @@ provenance: {...}
 
 Capabilities form a hierarchy via `SUB_CAPABILITY_OF`. Two key rules
 (see §5):
-- A **root** capability (no parent) is what gets `IMPLEMENTED_BY` a
+- A **root** capability (no parent) is what gets `IMPLEMENTED_BY` an
+  **INTERNAL** component. Different roots may be owned by different
+  internal components — capabilities are not all attached to one
   component.
 - A **leaf** capability (no children) is what gets `REALIZED_BY` a
   requirement.
@@ -167,7 +188,7 @@ provenance: {...}
 ```
 
 The Mermaid source is **part of the model**, written by the
-process-analyst when the process is created. The SRS generator embeds
+process-analyst when the process is created. The SSS generator embeds
 it as-is; it does not regenerate diagrams from relationships.
 
 ### `scope_component_id` — the analysis level
@@ -180,9 +201,9 @@ internal `SUBSYSTEM` (or other internal-typed) Component, and the
 process describes interactions *among that scope's sub-components and
 its environment at that level*.
 
-This field has no equivalent in the Python parent project today; it's
-a planned addition there too (see `docs/python-parent.md`). The
-metamodel divergence is deliberate and forward-looking.
+The scope field makes the level of analysis explicit, which is what the
+participant-derivation procedure (§4a) needs to compute the participant
+set for a process's sequence diagram.
 
 ## 4. Relationship types
 
@@ -212,11 +233,10 @@ relationship type is **strict**:
 
 Any relationship that doesn't match its row is invalid.
 
-The Python parent has a ninth value, `PARTICIPATES_IN_PROCESS`
-(COMPONENT → PROCESS), declared but unused. The subagent metamodel
-omits it because participation is **derivable** from `ACTIVATES` +
-`IMPLEMENTED_BY` + the capability hierarchy — see §4a below. Recommend
-deleting the unused enum value from the Python on next touch.
+This metamodel has **no** `PARTICIPATES_IN_PROCESS` relationship.
+Process participation is **derivable** from `ACTIVATES` +
+`IMPLEMENTED_BY` + the capability hierarchy — see §4a below — so storing
+it as an edge would only risk drift.
 
 ### 4a. Derived: process participants
 
@@ -246,11 +266,15 @@ environment_components(S, P) =
 
 Two important properties:
 
-- **At top level** (scope = SYSTEM), `activating_components` collapses
-  to `{SYSTEM}` because the SYSTEM has no internal-component children
-  yet decomposed, and *only* the SYSTEM owns capabilities. The
-  environment is the set of `ACTOR` / `EXTERNAL_SYSTEM` components.
-  Participants are therefore `{SYSTEM} ∪ (some externals)`.
+- **At top level** (scope = the system under design), `activating_components`
+  is the set of **INTERNAL** components whose activated capabilities are
+  exercised. When the system under design is a single component (just the
+  umbrella) this is `{umbrella}`; when it comprises several internal
+  components, it is the subset of them that own an activated capability.
+  The environment is the set of `EXTERNAL` components (`ACTOR` /
+  `EXTERNAL_SYSTEM`) the process interacts with. Participants are
+  therefore `(internal components owning an activated capability) ∪
+  (some externals)`.
 - **At lower level** (scope = some `SUBSYSTEM` S), `activating_components`
   is the set of S's direct child components whose capabilities are
   activated. The environment is the set of things outside S that S
@@ -263,28 +287,40 @@ renderer that needs the participant set computes it.
 ## 5. Semantic rules
 
 Beyond type-checking, the validator enforces eight rules. The
-`srs-generator` runs them before producing output and stops if any
+`sss-generator` runs them before producing output and stops if any
 fails. Activity agents should also check them after every save.
 
 1. **No component cycles.** The `SUB_COMPONENT_OF` graph must be acyclic.
 2. **No capability cycles.** The `SUB_CAPABILITY_OF` graph must be
    acyclic.
-3. **Every capability belongs to a component.** Walk up the capability
-   hierarchy to the root; that root must have `IMPLEMENTED_BY` to some
-   component.
-4. **Every requirement belongs to a component.** Walk from the
+3. **Every capability belongs to an internal component.** Walk up the
+   capability hierarchy to the root; that root must have `IMPLEMENTED_BY`
+   to some component whose `boundary` is `INTERNAL`.
+4. **Every requirement belongs to an internal component.** Walk from the
    requirement via `REALIZED_BY` to its leaf capability, then up the
-   capability tree to a root that's `IMPLEMENTED_BY` a component.
+   capability tree to a root that's `IMPLEMENTED_BY` an `INTERNAL`
+   component.
 5. **Sub-component requirements refine parent-component requirements.**
    If component B is `SUB_COMPONENT_OF` A, every requirement attached
    (via the capability tree) to B must `REFINES` some requirement
    attached to A.
+   - **Umbrella exemption.** The `SYSTEM` umbrella is an organisational
+     container for the system under design, not a requirement-bearing
+     component. When B's only parent (via `SUB_COMPONENT_OF`) is the
+     `SYSTEM` umbrella and that umbrella owns no requirements of its own,
+     B's requirements are exempt — no `REFINES` edge is required. The
+     rule still applies in full between any two parts that both own
+     requirements, and to the umbrella as a parent once it does own
+     requirements.
 6. **Only leaf capabilities may be `REALIZED_BY` requirements.** A
    capability with at least one `SUB_CAPABILITY_OF` incoming edge is
    non-leaf and may not carry requirements directly — push them down.
-7. **Only root capabilities may be `IMPLEMENTED_BY` components.** A
-   capability with an outgoing `SUB_CAPABILITY_OF` edge is non-root and
-   may not be implemented directly — only its top ancestor is.
+7. **Only root capabilities may be `IMPLEMENTED_BY` an INTERNAL
+   component.** A capability with an outgoing `SUB_CAPABILITY_OF` edge is
+   non-root and may not be implemented directly — only its top ancestor
+   is. The `IMPLEMENTED_BY` **target** must be a component with
+   `boundary: INTERNAL`; pointing a capability at an `EXTERNAL` component
+   is invalid (external entities own no capabilities).
 8. **Sequence-diagram participants match derived participants.** For
    every Process P with `diagram_type: SEQUENCE`, the set of
    participants named in `mermaid_code` must equal the set computed by
@@ -298,12 +334,14 @@ capability** (have at least one outgoing `ACTIVATES` edge).
 ### Level-of-analysis vs. metamodel rules
 
 The chief-analyst agent enforces an additional rule for **top-level**
-work: *only the SYSTEM component has capabilities; external entities
-do not.* This is a **rule of level-1 analysis**, not a metamodel rule.
-The metamodel permits any Component to be `IMPLEMENTED_BY` a
-capability — at lower levels, internal `SUBSYSTEM` components own
-their own capability hierarchies. Do not generalise the chief-analyst
-rule to the validator.
+work: *only INTERNAL components have capabilities; EXTERNAL entities do
+not.* Several internal components may each own capabilities — even at
+level 1 the capabilities need not all belong to the umbrella. This is a
+**rule of level-1 analysis** layered on top of the metamodel rule that
+`IMPLEMENTED_BY` targets must be `INTERNAL` (§5 rule 7); at lower levels,
+internal `SUBSYSTEM` components own their own capability hierarchies. Do
+not weaken the metamodel rule — `IMPLEMENTED_BY` an `EXTERNAL` component
+is always invalid.
 
 ## 6. Worked example (excerpt — dogfooding)
 
@@ -316,6 +354,7 @@ entity_type: COMPONENT
 title: RE-Agents PoC
 description: A subagent-based tool that facilitates requirements engineering.
 component_type: SYSTEM
+boundary: INTERNAL
 tags: [pocsystem]
 provenance:
   activity: context
@@ -332,6 +371,7 @@ entity_type: COMPONENT
 title: Requirements Analyst
 description: The human user driving the tool.
 component_type: ACTOR
+boundary: EXTERNAL
 provenance:
   activity: context
   mode: 1
@@ -387,8 +427,4 @@ provenance: {activity: context, mode: 1, rationale: Capability owned by the syst
   SEQUENCE only. A weaker form ("any Component named in the diagram
   must be in the derived participant set") may be worth adding once
   we have real STATE/ACTIVITY examples to test against.
-- **Python parent divergences** (tracked in `docs/python-parent.md`):
-  the subagent metamodel drops the unused `PARTICIPATES_IN_PROCESS`
-  relationship and adds `Process.scope_component_id`. Both should be
-  reconciled on migration.
 

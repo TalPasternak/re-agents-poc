@@ -1,0 +1,10 @@
+id: req-collect-fleet-status
+entity_type: REQUIREMENT
+title: Collect and surface fleet update status
+description: >-
+  The system shall collect the vehicle update status reported by each Master
+  Update ECU and surface the aggregated fleet update status to the fleet operator.
+requirement_type: FUNCTIONAL
+priority: MEDIUM
+tags: [ota]
+provenance: {activity: process, mode: 1, rationale: Back-end fleet status collection step., created: 2026-06-05, last_modified: 2026-06-05}

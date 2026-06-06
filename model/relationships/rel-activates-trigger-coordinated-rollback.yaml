@@ -1,0 +1,5 @@
+id: rel-activates-trigger-coordinated-rollback
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-trigger-coordinated-rollback
+provenance: {activity: process, mode: 1, rationale: Process exercises coordinated all-or-nothing rollback triggering., created: 2026-06-05, last_modified: 2026-06-05}

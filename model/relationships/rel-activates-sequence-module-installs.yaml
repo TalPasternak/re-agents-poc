@@ -1,0 +1,5 @@
+id: rel-activates-sequence-module-installs
+relationship_type: ACTIVATES
+source_id: proc-ota-update
+target_id: cap-sequence-module-installs
+provenance: {activity: process, mode: 1, rationale: Process exercises install sequencing/triggering., created: 2026-06-05, last_modified: 2026-06-05}

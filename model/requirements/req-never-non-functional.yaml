@@ -1,0 +1,17 @@
+id: req-never-non-functional
+entity_type: REQUIREMENT
+title: Never leave the vehicle non-functional
+description: >-
+  The system shall ensure that at the conclusion of any update attempt the vehicle
+  is left running either the complete new software set or the complete previously
+  installed software set, and shall never leave the vehicle in a non-functional or
+  partially updated state.
+requirement_type: CONSTRAINT
+priority: CRITICAL
+tags: [ota, safety, rollback]
+rationale: All-or-nothing safety guarantee — the core promise of the OTA system.
+acceptance_criteria:
+  - After a successful update, all three modules run the new image set.
+  - After a rolled-back update, all three modules run the previous image set.
+  - No outcome leaves a mix of new and old module images on the vehicle.
+provenance: {activity: process, mode: 4, rationale: Safety constraint surfaced via confirm-rollback-restoration leaf., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,8 @@
+id: cap-confirm-rollback-restoration
+entity_type: CAPABILITY
+title: Confirm restoration to prior working state
+description: >-
+  Collect each module's rollback outcome and confirm the vehicle has been wholly
+  restored to its previous working software state before declaring the update aborted.
+tags: [ota, master-ecu]
+provenance: {activity: capability, mode: 3, rationale: Restoration-confirmation facet of all-or-nothing rollback., created: 2026-06-05, last_modified: 2026-06-05}

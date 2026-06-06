@@ -1,0 +1,5 @@
+id: rel-conn-agfw-agent
+relationship_type: CONNECTS_TO
+source_id: if-agent-firmware
+target_id: c-target-ecu-update-agent
+provenance: {activity: context, mode: 1, rationale: Flash boundary attaches to the Target ECU Update Agent., created: 2026-06-05, last_modified: 2026-06-05}

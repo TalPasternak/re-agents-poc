@@ -1,0 +1,5 @@
+id: rel-realized-by-install-module
+relationship_type: REALIZED_BY
+source_id: req-install-module
+target_id: cap-install-module
+provenance: {activity: process, mode: 1, rationale: Requirement realised by module install leaf., created: 2026-06-05, last_modified: 2026-06-05}

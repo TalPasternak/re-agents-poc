@@ -1,0 +1,16 @@
+id: c-backend
+entity_type: COMPONENT
+title: Back-end System
+description: >-
+  The cloud back-end of the OTA system. Hosts and manages software packages,
+  issues update / rollback / version-revert commands on behalf of the fleet
+  operator, and collects and surfaces update status across the fleet.
+component_type: SERVICE
+boundary: INTERNAL
+tags: [ota, cloud]
+provenance:
+  activity: context
+  mode: 1
+  rationale: Cloud back-end is an internal part of the OTA chain (confirmed).
+  created: 2026-06-05
+  last_modified: 2026-06-05

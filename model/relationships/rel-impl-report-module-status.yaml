@@ -1,0 +1,5 @@
+id: rel-impl-report-module-status
+relationship_type: IMPLEMENTED_BY
+source_id: cap-report-module-status
+target_id: c-target-ecu-update-agent
+provenance: {activity: context, mode: 1, rationale: Owned by the Target ECU Update Agent., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,8 @@
+id: cap-distribute-subpackages
+entity_type: CAPABILITY
+title: Distribute module sub-packages
+description: >-
+  Dispatch each of the three module sub-packages to its respective Target ECU
+  Update Agent over the in-vehicle bus.
+tags: [ota, master-ecu]
+provenance: {activity: capability, mode: 3, rationale: Sub-package distribution facet of install orchestration., created: 2026-06-05, last_modified: 2026-06-05}

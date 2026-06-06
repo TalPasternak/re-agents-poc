@@ -11,7 +11,7 @@ package com.reagents;
  * Likely future responsibilities of this Java module:
  * <ul>
  *   <li>Loading and validating the requirements model from {@code model/}</li>
- *   <li>Programmatic SRS generation (independent of an interactive agent session)</li>
+ *   <li>Programmatic SSS generation (independent of an interactive agent session)</li>
  *   <li>Hosting the runtime agent orchestrator once we move to the SDK</li>
  * </ul>
  */

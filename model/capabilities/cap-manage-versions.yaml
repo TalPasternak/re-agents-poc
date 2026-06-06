@@ -1,0 +1,9 @@
+id: cap-manage-versions
+entity_type: CAPABILITY
+title: Manage software versions
+description: >-
+  Track which software version is deployed per vehicle/module and maintain the
+  catalogue of versions available, enabling the operator to revert to a previous
+  version.
+tags: [ota, backend]
+provenance: {activity: context, mode: 1, rationale: Back-end manages versions to enable reverts., created: 2026-06-05, last_modified: 2026-06-05}

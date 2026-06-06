@@ -1,6 +1,6 @@
 # Requirements Model
 
-The canonical source of truth for the requirements model. The SRS in
+The canonical source of truth for the requirements model. The SSS in
 `output/` is generated from these files.
 
 ## Layout
@@ -15,8 +15,7 @@ model/
 └── relationships/   # one .yaml per Relationship
 ```
 
-The metamodel is documented in `.claude/skills/metamodel/SKILL.md` and
-mirrors the Python `SystemMetaModel.py` in the parent project.
+The metamodel is documented in `.claude/skills/metamodel/SKILL.md`.
 
 ## ID convention
 

@@ -1,0 +1,8 @@
+id: cap-detect-module-failure
+entity_type: CAPABILITY
+title: Detect any-module update failure
+description: >-
+  Detect a failed install or verification in any one of the three modules (or a
+  timeout / missing report) that must trigger a coordinated rollback.
+tags: [ota, master-ecu]
+provenance: {activity: capability, mode: 3, rationale: Failure-detection facet of all-or-nothing rollback., created: 2026-06-05, last_modified: 2026-06-05}

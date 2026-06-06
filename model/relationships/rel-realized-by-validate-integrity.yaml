@@ -1,0 +1,5 @@
+id: rel-realized-by-validate-integrity
+relationship_type: REALIZED_BY
+source_id: req-validate-integrity
+target_id: cap-validate-integrity
+provenance: {activity: process, mode: 1, rationale: Requirement realised by integrity validation leaf., created: 2026-06-05, last_modified: 2026-06-05}

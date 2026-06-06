@@ -1,6 +1,6 @@
 ---
 name: domain-modeler
-description: STUB. Domain modelling (problem-space terminology and conceptual model) is planned but not implemented. The Python parent project has no equivalent yet, and the metamodel has no entity type for domain concepts. Do not invoke — invocation will return a stub message directing the analyst to use existing agents.
+description: STUB. Domain modelling (problem-space terminology and conceptual model) is planned but not implemented. The metamodel has no entity type for domain concepts yet. Do not invoke — invocation will return a stub message directing the analyst to use existing agents.
 tools: Read
 ---
 
@@ -9,12 +9,10 @@ tools: Read
 **This agent is intentionally a stub.**
 
 The plan is for it to identify problem-space terminology and the
-conceptual domain model. Two things block implementation:
+conceptual domain model. What blocks implementation:
 
 1. The metamodel has no `DOMAIN_CONCEPT` entity type yet. See the
    metamodel skill §7 and decision-log DEC-007.
-2. The Python parent project does not yet have a corresponding agent,
-   so there's nothing to mirror.
 
 ## What to do if invoked
 
@@ -39,6 +37,5 @@ When this agent is built out:
    Record the decision in `docs/decision-log.md`.
 2. Update the metamodel skill (§3 add entity type, §4 add relationships,
    §5 add applicable semantic rules).
-3. Update the SRS template skill (§2 add a Domain Model section).
-4. Update the Python `SystemMetaModel` to keep the two sides in sync.
-5. Remove the stub status from this file.
+3. Update the SSS template skill (§2 add a Domain Model section).
+4. Remove the stub status from this file.

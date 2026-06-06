@@ -1,0 +1,5 @@
+id: rel-realized-by-detect-module-timeout
+relationship_type: REALIZED_BY
+source_id: req-detect-module-timeout
+target_id: cap-detect-module-failure
+provenance: {activity: process, mode: 3, rationale: Timeout requirement realised by the failure detection leaf., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,0 +1,5 @@
+id: rel-realized-by-rollback-module
+relationship_type: REALIZED_BY
+source_id: req-rollback-module
+target_id: cap-rollback-module
+provenance: {activity: process, mode: 1, rationale: Requirement realised by module rollback leaf., created: 2026-06-05, last_modified: 2026-06-05}

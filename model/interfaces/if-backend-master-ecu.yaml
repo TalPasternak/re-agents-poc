@@ -1,0 +1,18 @@
+id: if-backend-master-ecu
+entity_type: INTERFACE
+title: OTA network link (Back-end–Master Update ECU)
+description: >-
+  The over-the-air network link between the cloud back-end and the in-vehicle
+  Master Update ECU. Carries software packages downward and update status
+  upward, plus update/rollback/version-revert commands. Internal–internal
+  interface (both parts of the system); assumes vehicle internet connectivity.
+interface_type: NETWORK
+protocol: HTTPS/TLS over cellular
+connected_component_ids: [c-backend, c-master-update-ecu]
+tags: [ota]
+provenance:
+  activity: context
+  mode: 1
+  rationale: The OTA delivery and reporting channel to the vehicle (confirmed).
+  created: 2026-06-05
+  last_modified: 2026-06-05

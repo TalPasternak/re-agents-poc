@@ -16,5 +16,5 @@ bin/
 .DS_Store
 Thumbs.db
 
-# Generated SRS report (the SRS itself we keep — it's the deliverable)
+# Generated SSS report (the SSS itself we keep — it's the deliverable)
 output/generation-report.md

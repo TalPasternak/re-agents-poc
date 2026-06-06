@@ -1,0 +1,10 @@
+id: req-serve-update-package
+entity_type: REQUIREMENT
+title: Serve the requested update package
+description: >-
+  The system shall make the requested software update package available to the
+  Master Update ECU for acquisition when an update command is issued.
+requirement_type: FUNCTIONAL
+priority: HIGH
+tags: [ota]
+provenance: {activity: process, mode: 1, rationale: Back-end package management/serving step., created: 2026-06-05, last_modified: 2026-06-05}

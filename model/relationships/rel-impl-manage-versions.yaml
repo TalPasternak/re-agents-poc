@@ -1,0 +1,5 @@
+id: rel-impl-manage-versions
+relationship_type: IMPLEMENTED_BY
+source_id: cap-manage-versions
+target_id: c-backend
+provenance: {activity: context, mode: 1, rationale: Owned by the back-end., created: 2026-06-05, last_modified: 2026-06-05}

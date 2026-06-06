@@ -1,0 +1,10 @@
+id: req-validate-authenticity
+entity_type: REQUIREMENT
+title: Validate package authenticity
+description: >-
+  The system shall verify the cryptographic signature of the acquired update
+  package and reject the package if the signature is invalid.
+requirement_type: FUNCTIONAL
+priority: CRITICAL
+tags: [ota, security]
+provenance: {activity: process, mode: 1, rationale: Master ECU authenticity validation step., created: 2026-06-05, last_modified: 2026-06-05}

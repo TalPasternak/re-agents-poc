@@ -1,0 +1,5 @@
+id: rel-realized-by-verify-module
+relationship_type: REALIZED_BY
+source_id: req-verify-module
+target_id: cap-verify-module
+provenance: {activity: process, mode: 1, rationale: Requirement realised by module verification leaf., created: 2026-06-05, last_modified: 2026-06-05}

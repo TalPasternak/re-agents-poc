@@ -1,0 +1,5 @@
+id: rel-conn-bkme-backend
+relationship_type: CONNECTS_TO
+source_id: if-backend-master-ecu
+target_id: c-backend
+provenance: {activity: context, mode: 1, rationale: OTA link attaches to the back-end., created: 2026-06-05, last_modified: 2026-06-05}
