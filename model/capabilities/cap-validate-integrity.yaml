@@ -1,8 +1,0 @@
-id: cap-validate-integrity
-entity_type: CAPABILITY
-title: Validate package integrity
-description: >-
-  Verify the checksum/hash of the downloaded package to confirm it is complete and
-  uncorrupted before installation begins.
-tags: [ota, master-ecu]
-provenance: {activity: capability, mode: 3, rationale: Integrity (checksum) validation leaf., created: 2026-06-05, last_modified: 2026-06-05}

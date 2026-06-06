@@ -18,3 +18,13 @@ Thumbs.db
 
 # Generated SSS report (the SSS itself we keep — it's the deliverable)
 output/generation-report.md
+
+# Generated and working files
+model/components/*.yaml
+model/capabilities/*.yaml
+model/requirements/*.yaml
+model/interfaces/*.yaml
+model/processes/*.yaml
+model/relationships/*.yaml
+output/sss.md
+output/generation-report.md

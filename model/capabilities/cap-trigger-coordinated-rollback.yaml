@@ -1,8 +1,0 @@
-id: cap-trigger-coordinated-rollback
-entity_type: CAPABILITY
-title: Trigger coordinated all-or-nothing rollback
-description: >-
-  On detecting any module failure, command every module's agent to roll back to
-  its previous working image so the whole vehicle reverts together (all-or-nothing).
-tags: [ota, master-ecu]
-provenance: {activity: capability, mode: 3, rationale: Rollback-triggering facet of all-or-nothing rollback., created: 2026-06-05, last_modified: 2026-06-05}

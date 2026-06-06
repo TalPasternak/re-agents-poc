@@ -1,5 +1,0 @@
-id: rel-conn-agfw-firmware
-relationship_type: CONNECTS_TO
-source_id: if-agent-firmware
-target_id: c-ext-target-ecu-firmware
-provenance: {activity: context, mode: 1, rationale: Flash boundary attaches to the external target ECU firmware., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,5 +1,0 @@
-id: rel-realized-by-distribute-subpackages
-relationship_type: REALIZED_BY
-source_id: req-distribute-subpackages
-target_id: cap-distribute-subpackages
-provenance: {activity: process, mode: 1, rationale: Requirement realised by sub-package distribution leaf., created: 2026-06-05, last_modified: 2026-06-05}

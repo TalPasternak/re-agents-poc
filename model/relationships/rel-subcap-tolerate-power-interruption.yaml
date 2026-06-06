@@ -1,6 +1,0 @@
-id: rel-subcap-tolerate-power-interruption
-relationship_type: SUB_CAPABILITY_OF
-source_id: cap-tolerate-power-interruption
-target_id: cap-fail-safe-operability
-description: Interruption tolerance is a facet of fail-safe operability.
-provenance: {activity: capability, mode: 3, rationale: Child of the cross-cutting fail-safe root., created: 2026-06-05, last_modified: 2026-06-05}

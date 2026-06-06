@@ -1,5 +1,0 @@
-id: rel-activates-report-vehicle-status
-relationship_type: ACTIVATES
-source_id: proc-ota-update
-target_id: cap-report-vehicle-status
-provenance: {activity: process, mode: 1, rationale: Process exercises aggregated vehicle status reporting., created: 2026-06-05, last_modified: 2026-06-05}

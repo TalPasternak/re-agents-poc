@@ -1,6 +1,0 @@
-id: rel-subcap-maintain-version-catalogue
-relationship_type: SUB_CAPABILITY_OF
-source_id: cap-maintain-version-catalogue
-target_id: cap-manage-versions
-description: Version-catalogue maintenance is a facet of version management.
-provenance: {activity: capability, mode: 3, rationale: Child of manage-versions root., created: 2026-06-05, last_modified: 2026-06-05}

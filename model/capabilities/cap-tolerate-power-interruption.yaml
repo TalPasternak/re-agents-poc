@@ -1,9 +1,0 @@
-id: cap-tolerate-power-interruption
-entity_type: CAPABILITY
-title: Tolerate power loss and interruption during flashing
-description: >-
-  Withstand power loss, communication drops, or other interruptions at any point
-  during flashing such that the vehicle is never left with a corrupt or partial
-  software set, and the in-progress operation can be safely resumed or aborted.
-tags: [ota, safety, cross-cutting]
-provenance: {activity: capability, mode: 3, rationale: Interruption-tolerance facet of fail-safe operability., created: 2026-06-05, last_modified: 2026-06-05}

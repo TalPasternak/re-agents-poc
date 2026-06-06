@@ -1,5 +1,0 @@
-id: rel-activates-confirm-rollback-restoration
-relationship_type: ACTIVATES
-source_id: proc-ota-update
-target_id: cap-confirm-rollback-restoration
-provenance: {activity: process, mode: 1, rationale: Process exercises confirmation of restoration to a safe operable state., created: 2026-06-05, last_modified: 2026-06-05}

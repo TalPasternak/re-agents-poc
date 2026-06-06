@@ -1,9 +1,0 @@
-id: cap-guarantee-working-software-set
-entity_type: CAPABILITY
-title: Guarantee a working software set via safe defaults
-description: >-
-  Ensure that on any abort, failure, or undefined state the vehicle falls back to
-  a complete, mutually-compatible, known-good software set (safe defaults), so it
-  is never left non-functional.
-tags: [ota, safety, cross-cutting]
-provenance: {activity: capability, mode: 3, rationale: Safe-default working-set guarantee facet of fail-safe operability., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,9 +1,0 @@
-id: cap-dual-bank-partitioning
-entity_type: CAPABILITY
-title: Maintain A/B (dual-bank) software partitions
-description: >-
-  Hold the running software in one bank while writing the update to an inactive
-  bank, switching banks only once the new image is validated, so a known-good
-  software set is always retained.
-tags: [ota, safety, cross-cutting]
-provenance: {activity: capability, mode: 3, rationale: A/B dual-bank scheme facet of fail-safe operability., created: 2026-06-05, last_modified: 2026-06-05}

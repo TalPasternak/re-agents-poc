@@ -1,5 +1,0 @@
-id: rel-realized-by-validate-compatibility
-relationship_type: REALIZED_BY
-source_id: req-validate-compatibility
-target_id: cap-validate-compatibility
-provenance: {activity: process, mode: 1, rationale: Requirement realised by compatibility validation leaf., created: 2026-06-05, last_modified: 2026-06-05}

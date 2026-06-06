@@ -1,8 +1,0 @@
-id: cap-receive-module-subpackage
-entity_type: CAPABILITY
-title: Receive module sub-package
-description: >-
-  Receive this module's sub-package from the Master Update ECU over the in-vehicle
-  bus, ready for installation.
-tags: [ota, agent]
-provenance: {activity: context, mode: 1, rationale: Update agent receives its module sub-package., created: 2026-06-05, last_modified: 2026-06-05}

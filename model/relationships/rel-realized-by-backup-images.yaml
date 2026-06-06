@@ -1,5 +1,0 @@
-id: rel-realized-by-backup-images
-relationship_type: REALIZED_BY
-source_id: req-backup-images
-target_id: cap-backup-images
-provenance: {activity: process, mode: 1, rationale: Requirement realised by image backup leaf., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,5 +1,0 @@
-id: rel-impl-collect-fleet-status
-relationship_type: IMPLEMENTED_BY
-source_id: cap-collect-fleet-status
-target_id: c-backend
-provenance: {activity: context, mode: 1, rationale: Owned by the back-end., created: 2026-06-05, last_modified: 2026-06-05}

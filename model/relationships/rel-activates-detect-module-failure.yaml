@@ -1,5 +1,0 @@
-id: rel-activates-detect-module-failure
-relationship_type: ACTIVATES
-source_id: proc-ota-update
-target_id: cap-detect-module-failure
-provenance: {activity: process, mode: 1, rationale: Process exercises module failure/timeout detection., created: 2026-06-05, last_modified: 2026-06-05}

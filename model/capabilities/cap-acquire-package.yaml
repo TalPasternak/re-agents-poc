@@ -1,8 +1,0 @@
-id: cap-acquire-package
-entity_type: CAPABILITY
-title: Acquire update package
-description: >-
-  Download the complete update package (all three module sub-packages) from the
-  back-end into the Master Update ECU's internal storage, ready for validation.
-tags: [ota, master-ecu]
-provenance: {activity: capability, mode: 3, rationale: Acquisition facet of acquire-and-validate., created: 2026-06-05, last_modified: 2026-06-05}

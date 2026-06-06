@@ -1,9 +1,0 @@
-id: cap-coordinate-rollback
-entity_type: CAPABILITY
-title: Coordinate all-or-nothing rollback
-description: >-
-  Detect a failure in any module's update and drive a coordinated rollback of
-  every module so the vehicle returns wholly to its previous working software
-  state (all-or-nothing).
-tags: [ota, master-ecu]
-provenance: {activity: context, mode: 1, rationale: Master ECU coordinates the all-or-nothing rollback., created: 2026-06-05, last_modified: 2026-06-05}

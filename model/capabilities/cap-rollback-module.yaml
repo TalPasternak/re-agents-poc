@@ -1,8 +1,0 @@
-id: cap-rollback-module
-entity_type: CAPABILITY
-title: Roll back module firmware
-description: >-
-  Restore this module's previous working firmware image on command, as part of a
-  coordinated all-or-nothing rollback or an operator-requested version revert.
-tags: [ota, agent]
-provenance: {activity: context, mode: 1, rationale: Update agent rolls back its own module., created: 2026-06-05, last_modified: 2026-06-05}

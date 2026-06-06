@@ -1,8 +1,0 @@
-id: cap-manage-packages
-entity_type: CAPABILITY
-title: Manage and host software packages
-description: >-
-  Store, organise, and serve the OTA update packages (each comprising three
-  per-module sub-packages) so they can be delivered to vehicles.
-tags: [ota, backend]
-provenance: {activity: context, mode: 1, rationale: Back-end hosts/manages packages., created: 2026-06-05, last_modified: 2026-06-05}

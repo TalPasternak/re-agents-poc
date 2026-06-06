@@ -1,5 +1,0 @@
-id: rel-realized-by-confirm-rollback-restoration
-relationship_type: REALIZED_BY
-source_id: req-confirm-rollback-restoration
-target_id: cap-confirm-rollback-restoration
-provenance: {activity: process, mode: 1, rationale: Requirement realised by restoration confirmation leaf., created: 2026-06-05, last_modified: 2026-06-05}

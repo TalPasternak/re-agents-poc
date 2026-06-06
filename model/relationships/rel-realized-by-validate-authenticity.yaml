@@ -1,5 +1,0 @@
-id: rel-realized-by-validate-authenticity
-relationship_type: REALIZED_BY
-source_id: req-validate-authenticity
-target_id: cap-validate-authenticity
-provenance: {activity: process, mode: 1, rationale: Requirement realised by authenticity validation leaf., created: 2026-06-05, last_modified: 2026-06-05}

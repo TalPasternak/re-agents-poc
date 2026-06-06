@@ -1,8 +1,0 @@
-id: cap-maintain-version-catalogue
-entity_type: CAPABILITY
-title: Maintain catalogue of available versions
-description: >-
-  Maintain the catalogue of software versions available for deployment and revert,
-  recording version lineage so the operator can select a previous version to revert to.
-tags: [ota, backend]
-provenance: {activity: capability, mode: 3, rationale: Version-catalogue facet of version management., created: 2026-06-05, last_modified: 2026-06-05}

@@ -1,8 +1,0 @@
-id: cap-track-install-progress
-entity_type: CAPABILITY
-title: Track per-module installation progress
-description: >-
-  Track the install/verify progress and outcome of each of the three modules to
-  determine when the overall multi-module update has completed successfully.
-tags: [ota, master-ecu]
-provenance: {activity: capability, mode: 3, rationale: Progress-tracking facet of install orchestration., created: 2026-06-05, last_modified: 2026-06-05}
