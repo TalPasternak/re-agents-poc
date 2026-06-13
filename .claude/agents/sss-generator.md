@@ -46,7 +46,9 @@ if rules fail) rather than inventing content.
    - `{{requirements: ...}}` — nest by component → root capability →
      sub-capability → requirement under its realising leaf, per the
      skill's nesting conventions. Applies to FUNCTIONAL, NON_FUNCTIONAL,
-     and CONSTRAINT alike.
+     and CONSTRAINT alike. Put the requirement title and `(TYPE, PRIORITY)`
+     on the first bullet line and the description on its **own following
+     line** (indented continuation, no em-dash join).
    - `{{capability-diagram}}`, `{{context-diagram}}` — compute Mermaid
      from relationships per the skill's conventions (no umbrella node in
      the context diagram; umbrella-owned roots noted as `(System-wide)`).

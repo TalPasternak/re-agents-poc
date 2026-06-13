@@ -88,6 +88,20 @@ These govern the **text** placeholders (not the diagrams):
   *System-wide / cross-cutting* heading. Requirement text, priority,
   rationale, and acceptance criteria render verbatim. This applies equally
   to functional, non-functional, and constraint requirement types.
+  Render each leaf requirement so the **title and `(TYPE, PRIORITY)` are on
+  the first bullet line, and the requirement description on its own
+  following line** (an indented continuation paragraph under the bullet —
+  not on the same line as the title, no em-dash join). Rationale and
+  acceptance criteria follow as sub-bullets, e.g.:
+
+  ```markdown
+  - *Validate package authenticity* (FUNCTIONAL, CRITICAL)
+    The system shall verify the cryptographic signature of the acquired
+    update package and reject the package if the signature is invalid.
+    - Rationale: …
+    - Acceptance criteria:
+      - …
+  ```
 - **Activated capabilities (`{{processes}}`).** Render the capabilities a
   process `ACTIVATES` as a **table with columns Component | Capability**,
   one row per activated leaf capability, grouped by its owning internal
