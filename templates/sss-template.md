@@ -19,8 +19,8 @@ between them.
 
 #### 2.1.1 System components (internal)
 
-The system under design comprises the following internal components (the
-umbrella plus its parts). Each may own capabilities (see §2.2).
+The system under design comprises the following internal components. Each
+may own capabilities (see §2.2).
 
 {{components: boundary=INTERNAL}}
 
@@ -38,11 +38,11 @@ umbrella plus its parts). Each may own capabilities (see §2.2).
 
 ### 2.2 Capability hierarchy
 
-The system provides the following capabilities, organised hierarchically.
-Top-level (root) capabilities are owned by the internal components of the
-system under design (the capability diagram notes each root's owning
-component); sub-capabilities decompose them. Only leaf capabilities carry
-requirements.
+The system provides the following capabilities, organised by owning
+internal component. Within each component, top-level (root) capabilities
+are decomposed into sub-capabilities; only leaf capabilities carry
+requirements. Cross-cutting capabilities that span the whole system appear
+under a final *System-wide* heading.
 
 {{capability-tree}}
 
@@ -51,6 +51,10 @@ requirements.
 {{capability-diagram}}
 
 ## 3. Requirements
+
+Requirements are listed under the capability that realises them, nested to
+mirror the capability hierarchy: owning component → root capability →
+sub-capability → requirement.
 
 ### 3.1 Functional requirements
 
@@ -69,15 +73,9 @@ requirements.
 Each process below describes a system-level interaction. Participants are
 the internal components of the system under design whose capabilities the
 process exercises, plus the external entities they interact with
-(derived per metamodel §4a).
+(derived per metamodel §4a). Each process has its own subsection.
 
 {{processes}}
-
-## 5. Traceability
-
-The matrix maps capabilities to the requirements that realise them.
-
-{{traceability-matrix}}
 
 ---
 

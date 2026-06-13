@@ -30,12 +30,18 @@ applies the template in `templates/sss-template.md`, and writes
 
 | Section | Entities used | Relationships used | Diagram |
 |---|---|---|---|
-| 1. Introduction | the `SYSTEM` umbrella `Component` (title + description) | — | — |
-| 2. System Description — 2.1 System Context | all `INTERNAL` components (umbrella + parts) + all `EXTERNAL` components + their `Interface`s | `CONNECTS_TO` | Mermaid `graph` (computed) |
-| 2. System Description — 2.2/2.3 Capabilities | all `Capability`s (owned by any `INTERNAL` component) | `IMPLEMENTED_BY`, `SUB_CAPABILITY_OF` | Mermaid `graph TD` of capability tree (computed) |
-| 3. Requirements | all `Requirement`s | `REALIZED_BY`, `REFINES` | — |
-| 4. Processes | all `Process`es | `ACTIVATES` (participants derived per metamodel §4a) | Embedded `mermaid_code` from each Process (verbatim) |
-| 5. Traceability | all | `IMPLEMENTED_BY`, `REALIZED_BY`, `ACTIVATES` | — |
+| 1. Introduction | the `SYSTEM` umbrella `Component` (title + description) — as the **document subject** only, never listed as a component | — | — |
+| 2. System Description — 2.1 System Context | the `INTERNAL` parts (every `INTERNAL` component **except** the `SYSTEM` umbrella) + all `EXTERNAL` components + their `Interface`s | `CONNECTS_TO` | Mermaid `graph` (computed) |
+| 2. System Description — 2.2/2.3 Capabilities | all `Capability`s (owned by any `INTERNAL` component), **grouped by owning component**; umbrella-owned capabilities grouped under *System-wide* | `IMPLEMENTED_BY`, `SUB_CAPABILITY_OF` | Mermaid `graph TD` of capability tree (computed) |
+| 3. Requirements | all `Requirement`s, **nested by component → capability → sub-capability** | `REALIZED_BY`, `REFINES` | — |
+| 4. Processes | all `Process`es, each in its own subsection | `ACTIVATES` (participants derived per metamodel §4a) | Embedded `mermaid_code` from each Process (verbatim) |
+
+The `SYSTEM` umbrella component is **never rendered as a component** in the
+body — not in the §2.1.1 component list, not as a node in the context
+diagram, and not as a named capability owner. It appears only as the
+document's title/subject (§1). Capabilities it owns are rendered under a
+*System-wide / cross-cutting capabilities* heading that does not name the
+umbrella.
 
 Domain modelling has no section yet (see metamodel skill §7).
 
@@ -46,39 +52,74 @@ evaluated by the generator:
 
 | Placeholder | Resolves to |
 |---|---|
-| `{{system.title}}` | Title of the SYSTEM umbrella component |
-| `{{system.description}}` | Description of the SYSTEM umbrella component |
-| `{{components: boundary=INTERNAL}}` | List of internal components (the umbrella + its parts) |
+| `{{system.title}}` | Title of the SYSTEM umbrella component (document subject) |
+| `{{system.description}}` | Description of the SYSTEM umbrella component (document subject) |
+| `{{components: boundary=INTERNAL}}` | List of internal components — the internal parts, **excluding** the SYSTEM umbrella |
 | `{{components: boundary=EXTERNAL}}` | List of external components |
 | `{{interfaces}}` | All interfaces (table: title, type, connected components) |
-| `{{capability-tree}}` | Markdown nested list of the capability hierarchy |
+| `{{capability-tree}}` | Capability hierarchy grouped by owning internal component (umbrella-owned under *System-wide*); see conventions below |
 | `{{capability-diagram}}` | Computed Mermaid `graph TD` of the capability tree |
-| `{{context-diagram}}` | Computed Mermaid `graph` of SYSTEM + externals + interfaces |
-| `{{requirements: requirement_type=FUNCTIONAL}}` | Functional requirements grouped by realising capability |
-| `{{requirements: requirement_type=NON_FUNCTIONAL}}` | Non-functional requirements grouped likewise |
-| `{{processes}}` | Each process, its description, its embedded `mermaid_code`, and a list of activated capabilities |
-| `{{traceability-matrix}}` | Capability × Requirement matrix, with cells indicating `REALIZED_BY` |
+| `{{context-diagram}}` | Computed Mermaid `graph` of the internal parts + externals + interfaces (no umbrella node) |
+| `{{requirements: requirement_type=FUNCTIONAL}}` | Functional requirements nested by component → capability → sub-capability → requirement |
+| `{{requirements: requirement_type=NON_FUNCTIONAL}}` | Non-functional requirements nested likewise |
+| `{{requirements: requirement_type=CONSTRAINT}}` | Constraints nested likewise |
+| `{{processes}}` | Each process in its own numbered subsection: description, embedded `mermaid_code`, a Component × Capability table of activated capabilities, and the derived participants |
 
 Empty results render as `*(no items)*` unless the template marks the
 section with `{{omit-if-empty}}`.
+
+## Grouping and nesting conventions
+
+These govern the **text** placeholders (not the diagrams):
+
+- **Capabilities (`{{capability-tree}}`).** When more than one internal
+  component owns capabilities, render a subheading per **owning internal
+  component** (ordered by `(component_type, id)`), and under each, that
+  component's root capabilities with their sub-capability trees. Drop the
+  per-root "owned by …" annotation — the grouping conveys ownership.
+  Capabilities owned by the `SYSTEM` umbrella are rendered last under a
+  **System-wide / cross-cutting capabilities** heading that does **not**
+  name the umbrella. When only one internal component owns capabilities,
+  render a single flat tree with no component subheadings.
+- **Requirements (`{{requirements: ...}}`).** Nest to mirror the
+  capability hierarchy: owning component (if more than one) → root
+  capability → sub-capability → the requirement(s) under their realising
+  **leaf** capability. Umbrella-owned branches go under the same
+  *System-wide / cross-cutting* heading. Requirement text, priority,
+  rationale, and acceptance criteria render verbatim. This applies equally
+  to functional, non-functional, and constraint requirement types.
+- **Activated capabilities (`{{processes}}`).** Render the capabilities a
+  process `ACTIVATES` as a **table with columns Component | Capability**,
+  one row per activated leaf capability, grouped by its owning internal
+  component (umbrella-owned → *System-wide*). Do not render them as a bare
+  bullet list.
 
 ## Generated-diagram conventions
 
 When the generator computes a diagram from relationships:
 
-- **Context diagram** (`{{context-diagram}}`): the `SYSTEM` umbrella as a
-  distinct node (`[[...]]`); any other `INTERNAL` components as plain
-  boxes (`[...]`) grouped with the umbrella (e.g. inside a
-  `subgraph` labelled "System under design"); one node per `EXTERNAL`
-  component (rounded — `(...)`); one labelled edge per interface using
-  the interface title. When the system is a single component, only the
-  umbrella appears on the internal side.
+- **Always double-quote every label.** Node labels, subgraph titles, and
+  edge labels in any computed diagram must be wrapped in `"..."`, because
+  component and interface titles routinely contain `(`, `)`, `/`, and `–`,
+  which break Mermaid's parser when left unquoted (e.g. a parenthesised
+  interface title in an unquoted `---|...|` edge label is a parse error).
+  Use `id["Title"]` for boxes, `id("Title")` for rounded nodes,
+  `subgraph ID["Title"]` for subgraphs, and `---|"Title"|` for edge
+  labels. Never emit a bare unquoted title.
+- **Context diagram** (`{{context-diagram}}`): the `INTERNAL` parts as
+  plain boxes (`id["Title"]`) inside a `subgraph ID["System under design"]`
+  (the subgraph label stands in for the system — the `SYSTEM` umbrella is
+  **not** drawn as a node); one node per `EXTERNAL` component (rounded —
+  `id("Title")`); one labelled edge per interface using the (quoted)
+  interface title, e.g.
+  `c_backend ---|"OTA network link (Back-end–Master Update ECU)"| c_master_update_ecu`.
 - **Capability tree** (`{{capability-diagram}}`): `graph TD` with the
-  parent at top; `SUB_CAPABILITY_OF` becomes a parent→child edge. Each
-  root capability `IMPLEMENTED_BY` a component gets a side-note naming its
-  **owning internal component** (roots owned by different internal
-  components are distinguished), but the implementation link is not an
-  edge in this diagram (it would clutter).
+  parent at top; `SUB_CAPABILITY_OF` becomes a parent→child edge; node
+  labels quoted per the rule above. Each root capability gets a side-note
+  naming its **owning internal component**; roots owned by the `SYSTEM`
+  umbrella are noted as `(System-wide)` rather than naming the umbrella.
+  The implementation link is not an edge in this diagram (it would
+  clutter).
 - Sequence/state/activity diagrams come **from the Process** verbatim —
   the generator does not synthesise them.
 
