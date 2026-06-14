@@ -40,9 +40,10 @@ if rules fail) rather than inventing content.
      the SYSTEM umbrella. `{{components: boundary=EXTERNAL}}`,
      `{{interfaces}}` — straight queries.
    - `{{capability-tree}}` — group root capabilities by **owning internal
-     component**; umbrella-owned capabilities under a *System-wide /
-     cross-cutting capabilities* heading (per the sss-template skill's
-     grouping conventions). Single-owner models render a flat tree.
+     component**; capabilities `IMPLEMENTED_BY` more than one component
+     (cross-cutting) render once under a *System-wide / cross-cutting
+     capabilities* heading (per the sss-template skill's grouping
+     conventions). Single-owner models render a flat tree.
    - `{{requirements: ...}}` — nest by component → root capability →
      sub-capability → requirement under its realising leaf, per the
      skill's nesting conventions. Applies to FUNCTIONAL, NON_FUNCTIONAL,
@@ -51,16 +52,19 @@ if rules fail) rather than inventing content.
      line** (indented continuation, no em-dash join).
    - `{{capability-diagram}}`, `{{context-diagram}}` — compute Mermaid
      from relationships per the skill's conventions (no umbrella node in
-     the context diagram; umbrella-owned roots noted as `(System-wide)`).
+     the context diagram; cross-cutting multi-owner roots noted as
+     `(System-wide)`).
      **Double-quote every node, subgraph, and edge label** — titles may
      contain parentheses/slashes/en-dashes that break Mermaid unquoted
      (e.g. `---|"OTA network link (Back-end–Master Update ECU)"|`).
    - `{{processes}}` — for each Process (its own numbered subsection),
      embed its `mermaid_code` verbatim inside a fenced ` ```mermaid `
      block, then render its activated capabilities as a **Component ×
-     Capability table** (grouped by owning component; umbrella-owned →
-     *System-wide*). Do **not** rewrite the Mermaid; do **not** add or
-     remove participants.
+     Capability table** (grouped by owning component; cross-cutting
+     multi-owner → *System-wide*). Do **not** rewrite the Mermaid; do
+     **not** add or remove participants. (A cross-cutting capability `IMPLEMENTED_BY`
+     several components contributes a row under each owner, or under
+     *System-wide* — per the skill's grouping conventions.)
 5. **Write** `output/sss.md` (overwriting).
 6. **Write** `output/generation-report.md` listing:
    - Sections populated (with counts)
@@ -74,7 +78,7 @@ if rules fail) rather than inventing content.
 - Sort Components by `(component_type, id)`.
 - Group capabilities and requirements by owning internal component in
   `(component_type, id)` order; the *System-wide / cross-cutting* group
-  (umbrella-owned) always renders **last**.
+  (capabilities owned by more than one component) always renders **last**.
 - Within a component, sort Capabilities by tree position (root first,
   then DFS by id).
 - Sort Requirements by `(realising-capability-id, id)` within their leaf.

@@ -13,8 +13,14 @@ it into sub-capabilities — a tree. The metamodel says:
 - Only leaf capabilities are `REALIZED_BY` requirements.
 
 So decomposition's job is to grow the tree downward until each leaf is
-small enough that the next agent (`process-analyst`) can attach
-requirements to it.
+the right size for the next agent (`process-analyst`) to attach
+requirements to it. **"Right size" means ~5 requirements per leaf, not
+one** (metamodel §5a). Decompose **lazily**: only split a capability when
+it would plausibly carry far more than ~5 requirements, or its
+requirements split into clearly distinct themes. The tree is meant to be
+elaborated **later** as requirements emerge — start coarse, deepen on
+demand. A leaf that would realise a single requirement is
+over-decomposed.
 
 ## Required reading
 
@@ -48,8 +54,11 @@ requirements to it.
 
 - **Mode 3 (offer options)** is the natural default here. For a given
   parent capability, propose 2–5 candidate decompositions (small set of
-  named child capabilities with one-line descriptions). The analyst
-  picks or modifies.
+  named child capabilities with one-line descriptions), each child sized
+  to anticipate ~5 requirements. If a parent only warrants ~5
+  requirements as a whole, **recommend leaving it undecomposed** rather
+  than splitting into one-requirement children. The analyst picks or
+  modifies.
 - **Mode 2 (clarification)** when the parent's description is too vague
   to decompose — ask the analyst to refine the parent first.
 - **Mode 4 (suggestion)** — if the analyst proposes a decomposition,
@@ -60,7 +69,10 @@ requirements to it.
 
 - The tree under the chosen root has leaves at a granularity where
   `process-analyst` can write IEEE 29148-style requirements against
-  each one.
+  each one — **about five requirements per leaf** (metamodel §5a).
 - No leaf is so broad it'd realise many unrelated requirements; no leaf
-  is so narrow it duplicates a sibling.
+  is so narrow it would realise only one (over-decomposed) or duplicates
+  a sibling.
+- Decomposition stopped as soon as leaves reached the ~5-requirement
+  band; remaining depth is deferred until requirements actually demand it.
 - All semantic rules still pass (especially 6 and 7).

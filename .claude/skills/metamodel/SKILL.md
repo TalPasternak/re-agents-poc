@@ -98,9 +98,18 @@ Notes:
   `component_type: SYSTEM` — the **umbrella** that names the whole (used
   for the SSS title and Section 1). The umbrella does *not* mean the
   system is a single component; the other internal parts have other
-  types with `boundary: INTERNAL` and may own their own root
-  capabilities. The chief-analyst agent enforces the single-umbrella
+  types with `boundary: INTERNAL` and are the ones that **own
+  capabilities**. The chief-analyst agent enforces the single-umbrella
   rule.
+- **The umbrella does not own capabilities** whenever the system has any
+  other internal part. Capabilities are `IMPLEMENTED_BY` the real
+  internal parts, never the `SYSTEM` umbrella. A **cross-cutting /
+  system-wide** capability that applies to every (or several) parts is
+  `IMPLEMENTED_BY` **each applicable part** — one `IMPLEMENTED_BY` edge
+  per owning component — *not* by the umbrella. The only case in which a
+  capability may be `IMPLEMENTED_BY` the umbrella is a **single-component
+  system**, where the umbrella is the sole `INTERNAL` component and there
+  is nowhere else to put capabilities.
 - `ACTOR` and `EXTERNAL_SYSTEM` (and other external-* values if added)
   are `EXTERNAL` and represent the system's environment.
 - `SUBSYSTEM` components are linked to their parent via
@@ -123,9 +132,13 @@ Capabilities form a hierarchy via `SUB_CAPABILITY_OF`. Two key rules
 - A **root** capability (no parent) is what gets `IMPLEMENTED_BY` an
   **INTERNAL** component. Different roots may be owned by different
   internal components — capabilities are not all attached to one
-  component.
+  component — and a single root may be `IMPLEMENTED_BY` **more than one**
+  component when it is cross-cutting (system-wide). The owning components
+  are never the `SYSTEM` umbrella unless the umbrella is the only
+  internal component.
 - A **leaf** capability (no children) is what gets `REALIZED_BY` a
-  requirement.
+  requirement. Shape the hierarchy so each leaf is broad enough to
+  anticipate **about five** requirements, not one (see §5a).
 
 Non-root, non-leaf capabilities are pure structural nodes — neither
 implemented by anything directly, nor realised by requirements directly.
@@ -320,7 +333,12 @@ fails. Activity agents should also check them after every save.
    non-root and may not be implemented directly — only its top ancestor
    is. The `IMPLEMENTED_BY` **target** must be a component with
    `boundary: INTERNAL`; pointing a capability at an `EXTERNAL` component
-   is invalid (external entities own no capabilities).
+   is invalid (external entities own no capabilities). The target must
+   **not** be the `SYSTEM` umbrella whenever any other internal component
+   exists — the umbrella owns capabilities **only** in a single-component
+   system. A root may have **several** `IMPLEMENTED_BY` edges (one per
+   owning component) when it is cross-cutting; each target must still be a
+   non-umbrella `INTERNAL` component.
 8. **Sequence-diagram participants match derived participants.** For
    every Process P with `diagram_type: SEQUENCE`, the set of
    participants named in `mermaid_code` must equal the set computed by
@@ -330,6 +348,23 @@ fails. Activity agents should also check them after every save.
 
 Plus, validator-level: **Every process must activate at least one
 capability** (have at least one outgoing `ACTIVATES` edge).
+
+### 5a. Capability granularity guidance
+
+This is **guidance**, not a hard validator rule, but it governs how
+chief-analyst and capability-decomposer shape the tree:
+
+- **Calibrate to ~5 requirements per leaf.** Build the capability
+  hierarchy so each leaf is expected to carry **about five** requirements
+  — broad enough to gather a coherent cluster of related requirements,
+  narrow enough that they share a theme. A leaf that would realise only
+  one requirement is **over-decomposed**; merge it up.
+- **Decompose lazily.** Only split a leaf when it would plausibly carry
+  **many more** than ~5 requirements, or when its requirements fall into
+  clearly distinct themes. The hierarchy is meant to be **elaborated
+  later** as more requirements emerge — start coarse, deepen on demand.
+- **Symptom to avoid.** A model where most leaves carry a single
+  requirement indicates the tree was decomposed too far up front.
 
 ### Level-of-analysis vs. metamodel rules
 
@@ -411,8 +446,12 @@ id: rel-impl-analyse-process
 relationship_type: IMPLEMENTED_BY
 source_id: cap-analyse-process
 target_id: c-system-re-agents
-provenance: {activity: context, mode: 1, rationale: Capability owned by the system., created: 2026-05-29, last_modified: 2026-05-29}
+provenance: {activity: context, mode: 1, rationale: Single-component system — the umbrella is the only INTERNAL component, so it owns the capability (the §5 rule-7 single-component exception)., created: 2026-05-29, last_modified: 2026-05-29}
 ```
+
+> Note: here the umbrella is `IMPLEMENTED_BY`-targeted only because it is
+> the **sole** internal component. In a multi-component system, this edge
+> would instead target the real internal part(s), never the umbrella.
 
 ## 7. Open questions / gaps
 

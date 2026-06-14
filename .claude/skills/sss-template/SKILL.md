@@ -32,16 +32,18 @@ applies the template in `templates/sss-template.md`, and writes
 |---|---|---|---|
 | 1. Introduction | the `SYSTEM` umbrella `Component` (title + description) — as the **document subject** only, never listed as a component | — | — |
 | 2. System Description — 2.1 System Context | the `INTERNAL` parts (every `INTERNAL` component **except** the `SYSTEM` umbrella) + all `EXTERNAL` components + their `Interface`s | `CONNECTS_TO` | Mermaid `graph` (computed) |
-| 2. System Description — 2.2/2.3 Capabilities | all `Capability`s (owned by any `INTERNAL` component), **grouped by owning component**; umbrella-owned capabilities grouped under *System-wide* | `IMPLEMENTED_BY`, `SUB_CAPABILITY_OF` | Mermaid `graph TD` of capability tree (computed) |
+| 2. System Description — 2.2/2.3 Capabilities | all `Capability`s (owned by any `INTERNAL` component), **grouped by owning component**; capabilities owned by **more than one** internal component (cross-cutting) grouped under *System-wide* | `IMPLEMENTED_BY`, `SUB_CAPABILITY_OF` | Mermaid `graph TD` of capability tree (computed) |
 | 3. Requirements | all `Requirement`s, **nested by component → capability → sub-capability** | `REALIZED_BY`, `REFINES` | — |
 | 4. Processes | all `Process`es, each in its own subsection | `ACTIVATES` (participants derived per metamodel §4a) | Embedded `mermaid_code` from each Process (verbatim) |
 
 The `SYSTEM` umbrella component is **never rendered as a component** in the
 body — not in the §2.1.1 component list, not as a node in the context
 diagram, and not as a named capability owner. It appears only as the
-document's title/subject (§1). Capabilities it owns are rendered under a
-*System-wide / cross-cutting capabilities* heading that does not name the
-umbrella.
+document's title/subject (§1). The umbrella owns no capabilities (except a
+single-component system). **Cross-cutting** capabilities — those
+`IMPLEMENTED_BY` more than one internal component — are rendered once under
+a *System-wide / cross-cutting capabilities* heading rather than repeated
+under each owner.
 
 Domain modelling has no section yet (see metamodel skill §7).
 
@@ -57,7 +59,7 @@ evaluated by the generator:
 | `{{components: boundary=INTERNAL}}` | List of internal components — the internal parts, **excluding** the SYSTEM umbrella |
 | `{{components: boundary=EXTERNAL}}` | List of external components |
 | `{{interfaces}}` | All interfaces (table: title, type, connected components) |
-| `{{capability-tree}}` | Capability hierarchy grouped by owning internal component (umbrella-owned under *System-wide*); see conventions below |
+| `{{capability-tree}}` | Capability hierarchy grouped by owning internal component (cross-cutting, multi-owner capabilities under *System-wide*); see conventions below |
 | `{{capability-diagram}}` | Computed Mermaid `graph TD` of the capability tree |
 | `{{context-diagram}}` | Computed Mermaid `graph` of the internal parts + externals + interfaces (no umbrella node) |
 | `{{requirements: requirement_type=FUNCTIONAL}}` | Functional requirements nested by component → capability → sub-capability → requirement |
@@ -77,15 +79,16 @@ These govern the **text** placeholders (not the diagrams):
   component** (ordered by `(component_type, id)`), and under each, that
   component's root capabilities with their sub-capability trees. Drop the
   per-root "owned by …" annotation — the grouping conveys ownership.
-  Capabilities owned by the `SYSTEM` umbrella are rendered last under a
-  **System-wide / cross-cutting capabilities** heading that does **not**
-  name the umbrella. When only one internal component owns capabilities,
-  render a single flat tree with no component subheadings.
+  **Cross-cutting** capabilities — a root `IMPLEMENTED_BY` more than one
+  internal component — are rendered **once**, last, under a **System-wide
+  / cross-cutting capabilities** heading (not repeated under each owner,
+  and not naming the umbrella). When only one internal component owns
+  capabilities, render a single flat tree with no component subheadings.
 - **Requirements (`{{requirements: ...}}`).** Nest to mirror the
   capability hierarchy: owning component (if more than one) → root
   capability → sub-capability → the requirement(s) under their realising
-  **leaf** capability. Umbrella-owned branches go under the same
-  *System-wide / cross-cutting* heading. Requirement text, priority,
+  **leaf** capability. Cross-cutting (multi-owner) branches go under the
+  same *System-wide / cross-cutting* heading. Requirement text, priority,
   rationale, and acceptance criteria render verbatim. This applies equally
   to functional, non-functional, and constraint requirement types.
   Render each leaf requirement so the **title and `(TYPE, PRIORITY)` are on
@@ -105,8 +108,8 @@ These govern the **text** placeholders (not the diagrams):
 - **Activated capabilities (`{{processes}}`).** Render the capabilities a
   process `ACTIVATES` as a **table with columns Component | Capability**,
   one row per activated leaf capability, grouped by its owning internal
-  component (umbrella-owned → *System-wide*). Do not render them as a bare
-  bullet list.
+  component (cross-cutting multi-owner → *System-wide*). Do not render
+  them as a bare bullet list.
 
 ## Generated-diagram conventions
 
@@ -130,10 +133,10 @@ When the generator computes a diagram from relationships:
 - **Capability tree** (`{{capability-diagram}}`): `graph TD` with the
   parent at top; `SUB_CAPABILITY_OF` becomes a parent→child edge; node
   labels quoted per the rule above. Each root capability gets a side-note
-  naming its **owning internal component**; roots owned by the `SYSTEM`
-  umbrella are noted as `(System-wide)` rather than naming the umbrella.
-  The implementation link is not an edge in this diagram (it would
-  clutter).
+  naming its **owning internal component**; cross-cutting roots
+  (`IMPLEMENTED_BY` more than one component) are noted as `(System-wide)`
+  rather than naming each owner. The implementation link is not an edge in
+  this diagram (it would clutter).
 - Sequence/state/activity diagrams come **from the Process** verbatim —
   the generator does not synthesise them.
 

@@ -51,11 +51,16 @@ have different participant rules; see the metamodel skill §5 note on
    `component_type: SYSTEM` — the **umbrella** that names the whole. The
    system may comprise **several** internal components (the umbrella plus
    other `INTERNAL`-typed parts); it is not restricted to one component.
-2. **At this level, capabilities belong to INTERNAL components only.**
-   Any internal component may own root capabilities — not just the
-   umbrella. **Never** create capabilities for `EXTERNAL` entities. (The
-   "internal only" restriction is a metamodel rule — §5 rule 7; the
-   "capabilities exist at all at level 1" framing is the level-1 rule.)
+2. **At this level, capabilities belong to the real INTERNAL parts —
+   never the umbrella.** Allocate every capability to a non-umbrella
+   internal component. **Do not allocate capabilities to the `SYSTEM`
+   umbrella.** A **cross-cutting / system-wide** capability (one that
+   applies to every, or several, internal parts) is `IMPLEMENTED_BY`
+   **each applicable part** — one edge per owning component — *not* the
+   umbrella. The umbrella may own a capability **only** when it is the
+   sole internal component (a single-component system, with nowhere else
+   to put capabilities). **Never** create capabilities for `EXTERNAL`
+   entities. (The "internal only" restriction is metamodel §5 rule 7.)
 3. External entities have type `ACTOR` or `EXTERNAL_SYSTEM` and
    `boundary: EXTERNAL`. Internal parts other than the umbrella carry an
    explicit `boundary: INTERNAL` (their `component_type` is `SUBSYSTEM`,
@@ -69,9 +74,16 @@ have different participant rules; see the metamodel skill §5 note on
    system does*; an interface is *the interaction point*.
 6. The top-level capabilities you produce are **roots**. The metamodel
    says only root capabilities can be `IMPLEMENTED_BY` an `INTERNAL`
-   component, so every capability you produce here will be linked
-   `IMPLEMENTED_BY` → its **owning internal component** (the umbrella or
-   another internal part).
+   component, so every capability you produce here is linked
+   `IMPLEMENTED_BY` → its **owning internal part(s)** — never the
+   umbrella (except the single-component case). A cross-cutting capability
+   gets one `IMPLEMENTED_BY` edge **per** applicable part.
+7. **Calibrate granularity to ~5 requirements per capability.** Pitch the
+   top-level capabilities so each is expected to carry **about five**
+   requirements once analysed — not one. Prefer fewer, broader roots;
+   decomposition into finer sub-capabilities happens later
+   (capability-decomposer) only when a leaf would carry far more than ~5.
+   See metamodel §5a.
 
 ## Outputs you write
 
@@ -87,8 +99,10 @@ have different participant rules; see the metamodel skill §5 note on
 - `model/interfaces/if-<slug>.yaml` — one per interface
 - `model/capabilities/cap-<slug>.yaml` — one per top-level capability
 - `model/relationships/rel-<slug>.yaml` — at minimum:
-  - one `IMPLEMENTED_BY` from each top-level capability to its **owning
-    internal component** (the umbrella or another internal part)
+  - one `IMPLEMENTED_BY` from each top-level capability to **each owning
+    non-umbrella internal part** (one edge per owner; a cross-cutting
+    capability therefore has several). Never target the umbrella unless it
+    is the sole internal component.
   - one `SUB_COMPONENT_OF` from each non-umbrella internal part to the
     umbrella (or its parent part)
   - one `CONNECTS_TO` from each interface to each component it touches
@@ -103,9 +117,10 @@ When the analyst provides a description (mode 1):
 
 1. Extract candidate internal components (the umbrella + any parts) /
    externals / interfaces / capabilities. For each capability, capture
-   **which internal component owns it**.
+   **which non-umbrella internal part(s) own it** — one part normally,
+   several if it is cross-cutting; never the umbrella.
 2. Echo them back as a single summary (numbered), grouping capabilities
-   under their owning internal component.
+   under their owning internal part(s).
 3. Ask which to keep, which to change, which to drop.
 4. Ask up to **3 clarification questions** for material gaps.
 5. Save only what the analyst confirms — and save it **immediately,
@@ -138,7 +153,7 @@ like this (a stable shape that makes later migration trivial):
     {"title": "...", "description": "...", "connected_to": "..."}
   ],
   "top_level_capabilities": [
-    {"title": "...", "description": "...", "owner": "c-<owning-internal-component>"}
+    {"title": "...", "description": "...", "owners": ["c-<owning-internal-part>", "..."]}
   ],
   "clarification_questions": ["..."]
 }
@@ -146,8 +161,10 @@ like this (a stable shape that makes later migration trivial):
 
 `system` is the umbrella component. `internal_components` lists the
 *other* internal parts (omit/empty when the system is a single
-component). Each capability's `owner` is the internal component it is
-`IMPLEMENTED_BY`.
+component). Each capability's `owners` is the list of non-umbrella
+internal parts it is `IMPLEMENTED_BY` — usually one entry, but **several**
+for a cross-cutting / system-wide capability. The umbrella never appears
+in `owners` unless it is the only internal component.
 
 You do **not** have to literally output JSON in the chat — show it as a
 readable summary. But when you save to YAML, the field names should
@@ -161,8 +178,14 @@ match the metamodel skill exactly.
   Interface.
 - Every external mentioned has a Component of the appropriate external
   type.
-- Every top-level capability is `IMPLEMENTED_BY` an `INTERNAL` component
-  (the umbrella or another internal part).
+- Every top-level capability is `IMPLEMENTED_BY` at least one
+  **non-umbrella** `INTERNAL` part (several for a cross-cutting
+  capability); the umbrella owns a capability only when it is the sole
+  internal component.
+- No capability is allocated to the `SYSTEM` umbrella when other internal
+  parts exist.
+- Capabilities are pitched at ~5 requirements each (metamodel §5a), not
+  one-requirement slivers.
 - The analyst confirms no further internal components, externals, or
   top-level capabilities come to mind.
 - All eight semantic rules in the metamodel skill still pass (rules
