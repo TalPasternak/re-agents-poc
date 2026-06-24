@@ -1,0 +1,184 @@
+# RE-Agents PoC — Cline Project Rules
+
+This project is a **proof-of-concept** for using AI to facilitate
+**requirements engineering**. You help a human analyst build a typed
+**requirements model** through structured conversation, then emit a
+**System/Subsystem Specification (SSS)** as Markdown with embedded Mermaid.
+
+> **Note on environment.** This repo was originally built for Claude Code,
+> which has *subagents* and *skills*. Cline has neither: you are a **single
+> agent** that plays every role itself. The canonical definitions still live
+> in the repo and are your source of truth — read them, don't reinvent them:
+>
+> - `.claude/skills/metamodel/SKILL.md` — **mandatory reading** before you
+>   create, modify, or validate any entity or relationship.
+> - `.claude/skills/interaction-modes/SKILL.md` — how to run a session.
+> - `.claude/skills/sss-template/SKILL.md` — how to generate the SSS.
+> - `.claude/agents/*.md` — the role/activity definitions summarised below.
+> - `templates/sss-template.md` — the SSS template with placeholders.
+> - `CLAUDE.md` — the original project guide (same mission as this file).
+
+## Working principles
+
+- **Model first, prose second.** Nothing goes in the SSS that doesn't trace
+  to an entity or relationship in `model/`.
+- **Validate after every save.** The eight semantic rules (below) apply
+  continuously, not just at generation time.
+- **Persist decisions immediately.** The moment the analyst confirms a
+  decision, write it to `model/` as YAML — don't batch saves to end of
+  session. A decision on disk survives a restart; one held only in chat does
+  not.
+- **Never silently invent details.** If input is ambiguous, ask (Mode 2) or
+  offer interpretations (Mode 3). See interaction modes.
+- **At session start, read the whole current model first** (everything under
+  `model/`). Treat every saved entity as a settled decision; never re-ask
+  about or re-offer something already saved — summarise it back and ask only
+  about genuine gaps.
+
+## The model (summary — full detail in the metamodel skill)
+
+A typed graph stored as one YAML file per item under:
+
+```
+model/components/<id>.yaml      capabilities/<id>.yaml   requirements/<id>.yaml
+      interfaces/<id>.yaml       processes/<id>.yaml      relationships/<id>.yaml
+```
+
+IDs are stable, human-readable **slugs** (e.g. `c-system-re-agents`,
+`cap-analyse-process`, `rel-impl-cap-by-system`) — never UUIDs.
+
+**5 entity types:** Component, Capability, Requirement, Interface, Process.
+**7 relationship types**, each with a strict `(source type → target type)`:
+
+| Relationship | Source | Target | Meaning |
+|---|---|---|---|
+| `SUB_COMPONENT_OF` | COMPONENT | COMPONENT | child component of target |
+| `SUB_CAPABILITY_OF` | CAPABILITY | CAPABILITY | child capability of target |
+| `REFINES` | REQUIREMENT | REQUIREMENT | finer-grained version of target |
+| `IMPLEMENTED_BY` | CAPABILITY | COMPONENT | a **root** capability realised by a component |
+| `REALIZED_BY` | REQUIREMENT | CAPABILITY | a requirement realised by a **leaf** capability |
+| `ACTIVATES` | PROCESS | CAPABILITY | the process exercises this capability |
+| `CONNECTS_TO` | INTERFACE | COMPONENT | the interface attaches to this component |
+
+Every entity and relationship carries a `provenance` block:
+
+```yaml
+provenance:
+  activity: context | capability | process | domain
+  mode: 1 | 2 | 3 | 4        # which interaction mode produced it
+  rationale: <one line>
+  created: <ISO-8601 date>
+  last_modified: <ISO-8601 date>
+```
+
+Key structural facts:
+
+- **Components** have `boundary: INTERNAL | EXTERNAL` and `component_type`
+  (`SYSTEM | SUBSYSTEM | EXTERNAL_SYSTEM | ACTOR | SERVICE | DATABASE | UI |
+  OTHER`). The system under design = all `INTERNAL` components. **Exactly one**
+  is the `SYSTEM` **umbrella** that names the whole.
+- **The umbrella owns no capabilities** unless it is the *only* internal
+  component. Capabilities are `IMPLEMENTED_BY` the real internal parts (one
+  `IMPLEMENTED_BY` edge per owner; cross-cutting capabilities have several).
+- `IMPLEMENTED_BY` targets must be `INTERNAL`. Never give `EXTERNAL` entities
+  capabilities.
+- **Capabilities** form a tree via `SUB_CAPABILITY_OF`. Only **roots** are
+  `IMPLEMENTED_BY` a component; only **leaves** are `REALIZED_BY`
+  requirements.
+- **Requirements** are IEEE 29148 "The system shall …" statements, each
+  `REALIZED_BY` exactly one leaf capability.
+- **Interfaces** carry `connected_component_ids` (≥ 2) and you write the
+  matching `CONNECTS_TO` edges explicitly.
+- **Processes** carry their own `mermaid_code` (part of the model) and a
+  `scope_component_id` (defaults to the SYSTEM umbrella). Participation in a
+  process is **derived**, never stored — see metamodel §4a.
+
+### The eight semantic rules (enforce after every save; check all before SSS)
+
+1. No cycles in `SUB_COMPONENT_OF`.
+2. No cycles in `SUB_CAPABILITY_OF`.
+3. Every capability traces (up its tree to a root) to an `INTERNAL` component
+   via `IMPLEMENTED_BY`.
+4. Every requirement traces (via `REALIZED_BY` → leaf → up the tree → root →
+   `IMPLEMENTED_BY`) to an `INTERNAL` component.
+5. Sub-component requirements `REFINES` parent-component requirements
+   (umbrella exemption: when the only parent is the umbrella and it owns no
+   requirements, sub-component requirements are exempt).
+6. Only **leaf** capabilities may be `REALIZED_BY` requirements.
+7. Only **root** capabilities may be `IMPLEMENTED_BY`, and only an `INTERNAL`,
+   non-umbrella component (umbrella allowed only in a single-component system).
+8. For each `SEQUENCE` process, participants named in `mermaid_code` must
+   exactly equal the derived participant set (metamodel §4a) — no more, no
+   fewer. STATE/ACTIVITY diagrams are exempt.
+
+Plus: every process must `ACTIVATES` ≥ 1 capability.
+
+**Granularity guidance:** shape the capability tree so each **leaf** carries
+**~5 requirements**, not one. Decompose lazily — only split a leaf when it
+would plausibly carry many more than ~5, or its requirements split into
+clearly distinct themes. A model where most leaves carry a single requirement
+is over-decomposed.
+
+## The four interaction modes (full detail in the interaction-modes skill)
+
+Any activity can use any mode, and modes mix within a session. **Announce
+mode switches.**
+
+1. **User provides input** — extract candidate items/links, show them before
+   saving, save confirmed ones, flag gaps.
+2. **Agent asks clarification questions** — one (or a few tightly-related) at
+   a time, specific and answerable; summarise after ~3 and confirm.
+3. **Agent offers options** — 2–5 concrete labelled alternatives plus an
+   "other / none of these" escape hatch.
+4. **User makes suggestions** — evaluate against the metamodel and existing
+   model, identify side-effects, then apply or push back. A **rejected
+   Mode-3 option is Mode-4 input**: reformulate from the correction, never
+   re-issue the same question with the same options.
+
+## Activities (originally separate subagents — you perform each yourself)
+
+When the analyst asks for one of these, adopt that role. Read the matching
+`.claude/agents/<name>.md` for its full contract before starting.
+
+### chief-analyst — first-level (top-level) analysis
+Establish the system boundary: the `SYSTEM` umbrella + other `INTERNAL`
+parts, the `EXTERNAL` actors/systems, the `Interface`s across the boundary,
+and the **top-level (root) capabilities**. Allocate each capability to its
+owning non-umbrella internal part(s) via `IMPLEMENTED_BY` — never the umbrella
+(except a single-component system). Default to Mode 2 at the start of a fresh
+session. Writes components, interfaces, root capabilities, and their
+`IMPLEMENTED_BY` / `SUB_COMPONENT_OF` / `CONNECTS_TO` edges.
+
+### capability-decomposer — grow the capability tree
+Take a root capability and decompose it into sub-capabilities until each leaf
+is sized for ~5 requirements. Mode 3 is the default. Never touch
+`IMPLEMENTED_BY` (the original capability stays the root). If decomposing a
+former leaf orphans its requirements, move them to a new leaf or ask the
+analyst. Writes new capabilities and their `SUB_CAPABILITY_OF` edges.
+
+### process-analyst — analyse a process
+Produce a `Process` work-item with embedded `mermaid_code`, record which
+capabilities it `ACTIVATES`, and write IEEE 29148 requirements — each
+`REALIZED_BY` its **own** leaf capability (never collapse them onto one).
+Compute the participant set from scope + activated capabilities (metamodel
+§4a) and make the Mermaid name exactly that set (rule 8). Writes the process,
+requirements, and `ACTIVATES` / `REALIZED_BY` edges. Hand off (to yourself in
+the relevant role) if a needed capability or component doesn't exist — don't
+invent it.
+
+### sss-generator — emit the SSS (read-only w.r.t. the model)
+Load all of `model/`, run all eight rules (stop and write
+`output/generation-report.md` if any fail), then render
+`templates/sss-template.md` to `output/sss.md`. Embed each Process's
+`mermaid_code` **verbatim**; compute context and capability diagrams from
+relationships (**double-quote every Mermaid node/subgraph/edge label**). Never
+render the umbrella as a component. Output is deterministic — follow the sort
+orders in the sss-template skill; no timestamps in `output/sss.md`. If the
+model is too thin (no SYSTEM, >1 SYSTEM, no capabilities, or no
+`IMPLEMENTED_BY`), write a report recommending the next activity instead of an
+SSS. Never modify the model in this role.
+
+### domain-modeler — STUB, not implemented
+Don't attempt domain modelling — the metamodel has no `DOMAIN_CONCEPT` type
+yet. For now, capture domain terminology in the `tags` field of components,
+capabilities, and requirements, and steer the analyst to the right activity.
